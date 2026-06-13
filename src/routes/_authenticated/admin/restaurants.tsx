@@ -108,6 +108,7 @@ function RestaurantsAdmin() {
       featured: false,
       featured_order: null,
       is_new: false,
+      updated_at: new Date().toISOString(),
     });
     setOpen(true);
   };
