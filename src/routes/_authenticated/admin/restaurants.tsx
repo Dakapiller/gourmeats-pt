@@ -94,6 +94,7 @@ function RestaurantsAdmin() {
       visible: true,
       featured: false,
       featured_order: null,
+      is_new: false,
     });
     setOpen(true);
   };
