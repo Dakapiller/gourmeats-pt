@@ -19,6 +19,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin/restaurants'
 import { Route as AuthenticatedAdminProofRouteImport } from './routes/_authenticated/admin/proof'
+import { Route as AuthenticatedAdminMetricsRouteImport } from './routes/_authenticated/admin/metrics'
 import { Route as AuthenticatedAdminHeroRouteImport } from './routes/_authenticated/admin/hero'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -72,6 +73,12 @@ const AuthenticatedAdminProofRoute = AuthenticatedAdminProofRouteImport.update({
   path: '/proof',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminMetricsRoute =
+  AuthenticatedAdminMetricsRouteImport.update({
+    id: '/metrics',
+    path: '/metrics',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminHeroRoute = AuthenticatedAdminHeroRouteImport.update({
   id: '/hero',
   path: '/hero',
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
+  '/admin/metrics': typeof AuthenticatedAdminMetricsRoute
   '/admin/proof': typeof AuthenticatedAdminProofRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -96,6 +104,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
+  '/admin/metrics': typeof AuthenticatedAdminMetricsRoute
   '/admin/proof': typeof AuthenticatedAdminProofRoute
   '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -110,6 +119,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/admin/hero': typeof AuthenticatedAdminHeroRoute
+  '/_authenticated/admin/metrics': typeof AuthenticatedAdminMetricsRoute
   '/_authenticated/admin/proof': typeof AuthenticatedAdminProofRoute
   '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin'
     | '/admin/hero'
+    | '/admin/metrics'
     | '/admin/proof'
     | '/admin/restaurants'
     | '/admin/settings'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/admin/hero'
+    | '/admin/metrics'
     | '/admin/proof'
     | '/admin/restaurants'
     | '/admin/settings'
@@ -148,6 +160,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/_authenticated/admin/hero'
+    | '/_authenticated/admin/metrics'
     | '/_authenticated/admin/proof'
     | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/settings'
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminProofRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/metrics': {
+      id: '/_authenticated/admin/metrics'
+      path: '/metrics'
+      fullPath: '/admin/metrics'
+      preLoaderRoute: typeof AuthenticatedAdminMetricsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/hero': {
       id: '/_authenticated/admin/hero'
       path: '/hero'
@@ -246,6 +266,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminHeroRoute: typeof AuthenticatedAdminHeroRoute
+  AuthenticatedAdminMetricsRoute: typeof AuthenticatedAdminMetricsRoute
   AuthenticatedAdminProofRoute: typeof AuthenticatedAdminProofRoute
   AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
@@ -255,6 +276,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminHeroRoute: AuthenticatedAdminHeroRoute,
+    AuthenticatedAdminMetricsRoute: AuthenticatedAdminMetricsRoute,
     AuthenticatedAdminProofRoute: AuthenticatedAdminProofRoute,
     AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
