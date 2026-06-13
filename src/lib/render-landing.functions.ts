@@ -121,6 +121,8 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%HERO_SUB%%/g, lightHtml(h.subheadline ?? ""))
       .replace(/%%HERO_STATS%%/g, heroStatsHtml)
       .replace(/%%LOGOS_ROW%%/g, logosHtml)
+      .replace(/%%LOGOS_EXTRA%%/g, logosExtraHtml)
+      .replace(/%%LOGOS_TOGGLE%%/g, logosToggleHtml)
       .replace(/%%PROOF_GRID%%/g, proofHtml)
       .replace(/%%FAQ_LIST%%/g, faqHtml)
       .replace(/%%FINAL_H%%/g, lightHtml(c.headline ?? ""))
