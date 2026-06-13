@@ -39,7 +39,12 @@ const dp=document.getElementById('dp');
 const dhint=document.getElementById('dhint');
 const dhintt=document.getElementById('dhintt');
 const drebtn=document.getElementById('drebtn');
+const dauto=document.getElementById('dauto');
+const dautoTxt=document.getElementById('dauto-txt');
 let cur=0;
+let autoTimer=null;
+let manualMode=false;
+const AUTO_DELAY=4200;
 for(let i=0;i<N-1;i++){const s=document.createElement('div');s.className='ds-seg';dprog.appendChild(s);}
 
 function setSide(i){
@@ -50,21 +55,46 @@ function setSide(i){
     dhint.style.display=d.hint?'inline-flex':'none';
     if(d.hint)dhintt.textContent=d.hint;
     drebtn.style.display=i===N-1?'block':'none';
-    [...dprog.children].forEach((s,idx)=>s.classList.toggle('done',idx<i));
+    const demoCta=document.getElementById('demo-cta-box');
+    if(demoCta)demoCta.style.display=i===N-1?'block':'none';
+    dauto.style.display=i===N-1?'none':'flex';
+    [...dprog.children].forEach((s,idx)=>{
+      s.classList.remove('active');
+      s.classList.toggle('done',idx<i);
+      if(idx===i&&!manualMode)s.classList.add('active');
+    });
     dside.classList.remove('fading');
   },200);
 }
 
-function goTo(i){SCS[cur].classList.remove('on');cur=i;SCS[cur].classList.add('on');setSide(i);}
-function toast(id,cb){const t=document.getElementById(id);if(t){t.classList.add('on');setTimeout(()=>{t.classList.remove('on');if(cb)cb();},1000);};}
-function restart(){goTo(0);}
+function startAuto(){
+  clearTimeout(autoTimer);
+  if(manualMode||cur>=N-1)return;
+  autoTimer=setTimeout(()=>{if(!manualMode&&cur<N-1)goTo(cur+1,false);},AUTO_DELAY);
+}
+
+function goTo(i,manual=true){
+  if(manual){manualMode=true;clearTimeout(autoTimer);dautoTxt.textContent='controlo manual';[...dprog.children].forEach(s=>s.classList.remove('active'));}
+  SCS[cur].classList.remove('on');cur=i;SCS[cur].classList.add('on');setSide(i);
+  if(!manual)startAuto();
+}
+
+function toast(id,cb){const t=document.getElementById(id);if(t){t.classList.add('on');setTimeout(()=>{t.classList.remove('on');if(cb)cb();},900);}}
+function restart(){manualMode=false;dautoTxt.textContent='a avançar automaticamente';goTo(0,false);startAuto();}
+
+// Auto-start when section enters viewport
+const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&cur===0&&!manualMode)startAuto();},{threshold:.3});
+const demoEl=document.getElementById('demo');
+if(demoEl)obs.observe(demoEl);
 
 // interactions
 document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1);});
+document.getElementById('tap-comida').addEventListener('click',   ()=>{if(cur===0)goTo(1);});
 document.getElementById('tap-lang-pt').addEventListener('click',  ()=>{if(cur===1)goTo(2);});
 document.getElementById('tap-add-pao').addEventListener('click',  e=>{e.stopPropagation();if(cur===2)toast('t-pao',()=>goTo(3));});
 document.getElementById('tap-add-salmao').addEventListener('click',e=>{e.stopPropagation();if(cur===3)toast('t-salmao',()=>goTo(4));});
 document.getElementById('tap-add-ribs').addEventListener('click', e=>{e.stopPropagation();if(cur===4)toast('t-ribs',()=>goTo(5));});
+document.getElementById('tap-add-bac').addEventListener('click',  e=>{e.stopPropagation();if(cur===5)toast('t-bac',()=>goTo(6));});
 
 // S6 bacalhau — tap on nav menu button
 document.getElementById('ds6').querySelector('.app-nav').addEventListener('click',e=>{
@@ -75,4 +105,13 @@ document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===
 document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8);});
 document.getElementById('credo').addEventListener('click',        restart);
 drebtn.addEventListener('click',                                   restart);
+
+// Gallery navigation
+function goSlide(n){
+  document.querySelectorAll('.gallery-slide').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.gnav-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+  const track=document.getElementById('galleryTrack');
+  if(track)track.style.transform=`translateX(-${n*100}%)`;
+}
+
 setSide(0);
