@@ -1,29 +1,58 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import styles from "../landing/styles.css.txt?raw";
+import body from "../landing/body.html?raw";
+import script1 from "../landing/script1.js?raw";
+import script2 from "../landing/script2.js?raw";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Gourmeats — Menus em vídeo para restaurantes" },
+      {
+        name: "description",
+        content:
+          "Transforme a sua carta num menu em vídeo. Os clientes vêem os pratos em vídeo antes de pedir.",
+      },
+      { property: "og:title", content: "Gourmeats — Menus em vídeo para restaurantes" },
+      {
+        property: "og:description",
+        content:
+          "Transforme a sua carta num menu em vídeo. Os clientes vêem os pratos em vídeo antes de pedir.",
+      },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap",
+      },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const tags: HTMLScriptElement[] = [];
+    for (const src of [script1, script2]) {
+      const s = document.createElement("script");
+      s.textContent = src;
+      document.body.appendChild(s);
+      tags.push(s);
+    }
+    return () => {
+      tags.forEach((s) => s.remove());
+    };
+  }, []);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+      <div ref={ref} dangerouslySetInnerHTML={{ __html: body }} />
+    </>
   );
 }
