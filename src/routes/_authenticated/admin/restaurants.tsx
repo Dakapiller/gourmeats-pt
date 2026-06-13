@@ -25,6 +25,7 @@ type Row = {
   visible: boolean;
   featured: boolean;
   featured_order: number | null;
+  is_new: boolean;
 };
 
 const MAX_FEATURED = 5;
