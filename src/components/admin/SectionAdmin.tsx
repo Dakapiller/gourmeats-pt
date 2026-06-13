@@ -20,10 +20,67 @@ import { Pencil, Trash2, Plus, ArrowUp, ArrowDown } from "lucide-react";
 export type Field = {
   name: string;
   label: string;
-  type?: "text" | "textarea" | "url" | "number";
+  type?: "text" | "textarea" | "url" | "number" | "image";
   required?: boolean;
   placeholder?: string;
+  bucket?: string; // for type "image"
 };
+
+function ImageField({
+  value,
+  onChange,
+  bucket,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+  bucket: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const handleFile = async (file: File) => {
+    setUploading(true);
+    const ext = file.name.split(".").pop() ?? "png";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from(bucket).upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+      contentType: file.type,
+    });
+    if (error) {
+      toast.error(error.message);
+      setUploading(false);
+      return;
+    }
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    onChange(data.publicUrl);
+    setUploading(false);
+  };
+  return (
+    <div className="space-y-2">
+      {value && (
+        <img
+          src={value}
+          alt="preview"
+          className="w-20 h-20 rounded-md object-cover border"
+        />
+      )}
+      <Input
+        type="file"
+        accept="image/*"
+        disabled={uploading}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) handleFile(f);
+        }}
+      />
+      <Input
+        type="url"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="ou cola um URL"
+      />
+    </div>
+  );
+}
 
 type Row = Record<string, any> & { id: string; sort_order: number; visible?: boolean };
 
