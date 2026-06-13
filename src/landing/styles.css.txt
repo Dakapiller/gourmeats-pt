@@ -376,7 +376,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
 @media(max-width:600px){
   /* Layout base */
   .wrap,.wrap-sm{padding:0 16px}
-  #hero{padding:84px 0 40px}
+  #hero{padding:72px 0 28px}
   .how-grid{grid-template-columns:1fr}
   .top-r .btn-ghost{display:none}
   .logos-row{gap:8px}
