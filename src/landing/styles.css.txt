@@ -660,3 +660,14 @@ summary:hover{background:var(--ys)}
   .ds-prog{max-width:240px;margin:0 auto}
   #hero{padding-top:96px}
 }
+
+/* Logos: expand all */
+.logos-extra{margin-top:14px;animation:logosFade .25s var(--ease,ease) both}
+.logos-extra[hidden]{display:none}
+@keyframes logosFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.logos-toggle-wrap{display:flex;justify-content:center;margin-top:22px}
+.logos-toggle{appearance:none;background:#fff;border:1px solid var(--line);color:var(--ink);font:inherit;font-weight:600;font-size:13px;padding:10px 18px;border-radius:999px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.logos-toggle:hover{border-color:var(--brand,var(--y));box-shadow:0 2px 10px rgba(20,181,166,.18)}
+.logos-toggle .logos-toggle-less{display:none}
+.logos-toggle.is-open .logos-toggle-more{display:none}
+.logos-toggle.is-open .logos-toggle-less{display:inline}
