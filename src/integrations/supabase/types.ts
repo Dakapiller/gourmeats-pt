@@ -235,6 +235,7 @@ export type Database = {
           featured: boolean
           featured_order: number | null
           id: string
+          is_new: boolean
           link_url: string | null
           logo_url: string | null
           name: string
@@ -246,6 +247,7 @@ export type Database = {
           featured?: boolean
           featured_order?: number | null
           id?: string
+          is_new?: boolean
           link_url?: string | null
           logo_url?: string | null
           name: string
@@ -257,6 +259,7 @@ export type Database = {
           featured?: boolean
           featured_order?: number | null
           id?: string
+          is_new?: boolean
           link_url?: string | null
           logo_url?: string | null
           name?: string
