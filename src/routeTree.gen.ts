@@ -23,6 +23,7 @@ import { Route as AuthenticatedAdminMetricsRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminHeroRouteImport } from './routes/_authenticated/admin/hero'
 import { Route as AuthenticatedAdminFeaturesRouteImport } from './routes/_authenticated/admin/features'
 import { Route as AuthenticatedAdminFaqRouteImport } from './routes/_authenticated/admin/faq'
+import { Route as AuthenticatedAdminCtaRouteImport } from './routes/_authenticated/admin/cta'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -97,6 +98,11 @@ const AuthenticatedAdminFaqRoute = AuthenticatedAdminFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminCtaRoute = AuthenticatedAdminCtaRouteImport.update({
+  id: '/cta',
+  path: '/cta',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/admin/cta': typeof AuthenticatedAdminCtaRoute
   '/admin/faq': typeof AuthenticatedAdminFaqRoute
   '/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/cta': typeof AuthenticatedAdminCtaRoute
   '/admin/faq': typeof AuthenticatedAdminFaqRoute
   '/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/admin/cta': typeof AuthenticatedAdminCtaRoute
   '/_authenticated/admin/faq': typeof AuthenticatedAdminFaqRoute
   '/_authenticated/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/_authenticated/admin/hero': typeof AuthenticatedAdminHeroRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/admin'
+    | '/admin/cta'
     | '/admin/faq'
     | '/admin/features'
     | '/admin/hero'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/sitemap.xml'
+    | '/admin/cta'
     | '/admin/faq'
     | '/admin/features'
     | '/admin/hero'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/_authenticated/admin/cta'
     | '/_authenticated/admin/faq'
     | '/_authenticated/admin/features'
     | '/_authenticated/admin/hero'
@@ -300,10 +312,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminFaqRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/cta': {
+      id: '/_authenticated/admin/cta'
+      path: '/cta'
+      fullPath: '/admin/cta'
+      preLoaderRoute: typeof AuthenticatedAdminCtaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminCtaRoute: typeof AuthenticatedAdminCtaRoute
   AuthenticatedAdminFaqRoute: typeof AuthenticatedAdminFaqRoute
   AuthenticatedAdminFeaturesRoute: typeof AuthenticatedAdminFeaturesRoute
   AuthenticatedAdminHeroRoute: typeof AuthenticatedAdminHeroRoute
@@ -316,6 +336,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminCtaRoute: AuthenticatedAdminCtaRoute,
     AuthenticatedAdminFaqRoute: AuthenticatedAdminFaqRoute,
     AuthenticatedAdminFeaturesRoute: AuthenticatedAdminFeaturesRoute,
     AuthenticatedAdminHeroRoute: AuthenticatedAdminHeroRoute,
