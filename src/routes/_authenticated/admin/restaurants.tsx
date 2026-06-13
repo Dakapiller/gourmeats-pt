@@ -78,6 +78,12 @@ function RestaurantsAdmin() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Row | null>(null);
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("smart");
+  const [fFeatured, setFFeatured] = useState(false);
+  const [fNew, setFNew] = useState(false);
+  const [fNoUrl, setFNoUrl] = useState(false);
+  const [fHidden, setFHidden] = useState(false);
 
   const load = async () => {
     setLoading(true);
