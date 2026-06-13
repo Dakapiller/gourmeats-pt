@@ -1,46 +1,54 @@
-# Importar restaurantes ativos + destaques
+# Plan
 
-## 1. Schema (migração)
-Adicionar à tabela `restaurants`:
-- `featured boolean not null default false` — marca destaque na landing
-- `featured_order integer` — ordem entre destacados (nullable)
+## 1. Landing — optimize section heights (mobile-first)
 
-Trigger ou validação no backoffice impede ter mais de 5 com `featured=true` (a constraint dura via partial unique index não dá; usamos validação UI + um trigger `BEFORE INSERT/UPDATE` que conta e rejeita acima de 5).
+Goal: less vertical scrolling on mobile while keeping desktop spacing readable.
 
-## 2. Seed dos 26 ativos
-Insert dos 26 restaurantes com `Status=Active` do ficheiro, mapeando:
-- `name` ← Name
-- `link_url` ← URL (NULL quando em falta)
-- `visible=true`, `sort_order` pela ordem cronológica de ativação
-- `logo_url=NULL` (a preencher depois no backoffice)
+In `src/landing/styles.css.txt`:
+- Reduce vertical padding of major sections (`section`, `.hero`, `.gallery-wrap`, `.logos`, `.faq`, `.cta`, `.metrics`, etc.) under the `max-width: 900px` and `max-width: 640px` media queries: ~30–40% tighter top/bottom padding.
+- Reduce mobile heading/line-height (`h1`, `h2`, `.gallery-h`, `.hero-h`) and gaps between blocks (`gap`, `margin-bottom`) on mobile only.
+- Shrink the gallery phone height on mobile (currently 200px width → tighter aspect), and reduce `.gallery-pts` gap to 6–8px on small screens.
+- Cap hero illustration / proof / metrics min-heights on mobile so they don't stretch.
 
-Restaurante "Seixo by Vasco Coelho Santos" (Churn) é excluído.
+Desktop visuals stay essentially unchanged.
 
-**Sem URL gourmeats (5):** Botequim Nostalgic, O Buraquinho, Bulha Bolhão, Kintsugi, Soul Bites.
+## 2. Gallery bug fix ("3 vistas")
 
-## 3. Backoffice (`/admin/restaurants`)
-- Novo campo `featured` (switch) + `featured_order` (number).
-- **Aviso visível** em cada card sem `link_url`: badge "Sem URL Gourmeats — adicionar" (amber).
-- Banner no topo a contar quantos restaurantes faltam URL e quantos destaques estão definidos (`x/5`).
-- Bloquear ativar 6.º destaque (toast + revert).
+Current bug: `goSlide(n)` translates `.gallery-track` by `-n*100%`, but `.gallery-track` lives inside a CSS grid column of unconstrained width, so the translate offset drifts and shows a blank/broken state when picking slide 2 or 3.
 
-## 4. Landing
-Na secção de logos:
-- Mostrar primeiro os `featured=true` (ordenados por `featured_order`, depois `sort_order`).
-- Os restantes ficam escondidos atrás de um botão **"Ver todos os restaurantes (21)"** que faz toggle (CSS `.logos-extra.is-open`) — sem nova rota, sem JS pesado.
-- Se 0 destacados, mostra tudo (fallback).
+Fix in `src/landing/body.html` + `styles.css.txt`:
+- Switch slide visibility from translate-based carousel to show/hide pattern: only `.gallery-slide.active` is rendered (`display:flex`), others `display:none`.
+- Remove the `translateX` line from `goSlide()` and drop `overflow:hidden`/`min-width:100%` from `.gallery-track` (becomes a simple container).
+- Keep nav tab toggling exactly as today — tabs remain clickable because slides no longer overflow their parent.
 
-`render-landing.functions.ts` passa a query a incluir `featured, featured_order` e divide em dois grupos no HTML gerado (`%%LOGOS_ROW%%` + novo `%%LOGOS_EXTRA%%` + botão).
+Result: clicking any of the 3 tabs swaps the slide cleanly; no horizontal drift.
 
-## 5. Fora de scope
-- Logos das marcas (ficam a NULL, placeholder por nome — já existente).
-- Alterações ao resto da landing/CTA/copy.
+## 3. Backoffice — Restaurants page workable
 
-## Ficheiros a tocar
-- Migração SQL (nova) — colunas + trigger.
-- Seed via insert tool — 26 linhas.
-- `src/routes/_authenticated/admin/restaurants.tsx` — campos + avisos.
-- `src/components/admin/SectionAdmin.tsx` — só se preciso para suportar `boolean`/`number` (verificar).
-- `src/lib/render-landing.functions.ts` — query + split + token.
-- `src/landing/body.html` — novo bloco `%%LOGOS_EXTRA%%` + botão toggle.
-- `src/landing/styles.css.txt` — estilos do toggle/extra.
+In `src/routes/_authenticated/admin/restaurants.tsx`:
+
+**Layout / scroll**
+- Wrap the page in a fixed-height shell: sticky top bar (title + search + filters + "Novo" button) and a scrollable list area (`max-h-[calc(100vh-220px)] overflow-y-auto`) instead of the whole page scrolling.
+- Make each row more compact (smaller logo thumb, single line of meta) to fit more on screen.
+
+**Search**
+- Add a search input in the sticky top bar (icon inside the field). Client-side filter by `name` (case/diacritics insensitive).
+
+**Filters** (chip toggles next to search)
+- "Em destaque" (only featured)
+- "Novos" (only `is_new`)
+- "Sem URL" (only missing `link_url`)
+- "Ocultos" (only `visible = false`)
+
+**Sort**
+- Dropdown "Ordenar por": `A–Z` (default), `Z–A`, `Mais recentes`, `Ordem manual`.
+- Default ordering rule: featured first (by `featured_order`), then `is_new` items, then the rest A–Z. The manual reorder arrows stay available only when sort = "Ordem manual".
+
+**Counters**
+- Small header line: `X restaurantes · Y em destaque · Z sem URL`.
+
+No DB schema changes required — all filtering/sorting happens client-side over the existing `restaurants` query.
+
+## Technical notes
+- Pure frontend changes. No migrations, no server functions touched.
+- Files: `src/landing/body.html`, `src/landing/styles.css.txt`, `src/routes/_authenticated/admin/restaurants.tsx`.

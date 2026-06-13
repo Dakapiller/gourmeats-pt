@@ -1,11 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +21,27 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon, Sparkles } from "lucide-react";
+import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon, Sparkles, Search, X } from "lucide-react";
+
+type SortKey = "smart" | "az" | "za" | "recent" | "manual";
+
+const normalize = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function FilterChip({ active, onClick, icon, children }: { active: boolean; onClick: () => void; icon?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors ${
+        active
+          ? "bg-foreground text-background border-foreground"
+          : "bg-background text-muted-foreground border-border hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      {icon}{children}
+    </button>
+  );
+}
 
 type Row = {
   id: string;
@@ -26,6 +53,7 @@ type Row = {
   featured: boolean;
   featured_order: number | null;
   is_new: boolean;
+  updated_at: string;
 };
 
 const MAX_FEATURED = 5;
@@ -65,6 +93,12 @@ function RestaurantsAdmin() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Row | null>(null);
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("smart");
+  const [fFeatured, setFFeatured] = useState(false);
+  const [fNew, setFNew] = useState(false);
+  const [fNoUrl, setFNoUrl] = useState(false);
+  const [fHidden, setFHidden] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -95,6 +129,7 @@ function RestaurantsAdmin() {
       featured: false,
       featured_order: null,
       is_new: false,
+      updated_at: new Date().toISOString(),
     });
     setOpen(true);
   };
@@ -164,57 +199,115 @@ function RestaurantsAdmin() {
     load();
   };
 
+  const filtered = useMemo(() => {
+    const q = normalize(query.trim());
+    let list = rows.filter((r) => {
+      if (q && !normalize(r.name).includes(q)) return false;
+      if (fFeatured && !r.featured) return false;
+      if (fNew && !r.is_new) return false;
+      if (fNoUrl && r.link_url) return false;
+      if (fHidden && r.visible) return false;
+      return true;
+    });
+    if (sortKey === "az") list.sort((a, b) => a.name.localeCompare(b.name, "pt"));
+    else if (sortKey === "za") list.sort((a, b) => b.name.localeCompare(a.name, "pt"));
+    else if (sortKey === "recent") list.sort((a, b) => (b.updated_at ?? "").localeCompare(a.updated_at ?? ""));
+    else if (sortKey === "manual") list.sort((a, b) => a.sort_order - b.sort_order);
+    else {
+      // smart: featured (by featured_order) → new → A-Z
+      list.sort((a, b) => {
+        if (a.featured !== b.featured) return a.featured ? -1 : 1;
+        if (a.featured && b.featured) return (a.featured_order ?? 999) - (b.featured_order ?? 999);
+        if (a.is_new !== b.is_new) return a.is_new ? -1 : 1;
+        return a.name.localeCompare(b.name, "pt");
+      });
+    }
+    return list;
+  }, [rows, query, sortKey, fFeatured, fNew, fNoUrl, fHidden]);
+
+  const activeFilters = [fFeatured, fNew, fNoUrl, fHidden].filter(Boolean).length;
+  const clearFilters = () => { setFFeatured(false); setFNew(false); setFNoUrl(false); setFHidden(false); setQuery(""); };
+
   return (
-    <div className="max-w-5xl">
-      <div className="flex items-end justify-between mb-6 gap-4 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-bold">Restaurantes clientes</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Os destacados (até {MAX_FEATURED}) aparecem primeiro na landing. Os restantes ficam atrás de "Ver todos".
-          </p>
+    <div className="max-w-5xl flex flex-col h-[calc(100vh-80px)]">
+      {/* Sticky top bar */}
+      <div className="sticky top-0 z-10 bg-background pb-3 border-b">
+        <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold">Restaurantes clientes</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {rows.length} restaurantes · <span className="text-amber-700">{featuredCount}/{MAX_FEATURED} em destaque</span> · <span className={missingUrl > 0 ? "text-amber-700" : ""}>{missingUrl} sem URL</span>
+            </p>
+          </div>
+          <Button onClick={startNew} size="sm"><Plus className="h-4 w-4" /> Adicionar</Button>
         </div>
-        <Button onClick={startNew}><Plus className="h-4 w-4" /> Adicionar</Button>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Pesquisar por nome…"
+              className="pl-8 pr-8 h-9"
+            />
+            {query && (
+              <button onClick={() => setQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" aria-label="Limpar">
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
+            <SelectTrigger className="w-[180px] h-9"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="smart">Destaques + A–Z</SelectItem>
+              <SelectItem value="az">Nome A–Z</SelectItem>
+              <SelectItem value="za">Nome Z–A</SelectItem>
+              <SelectItem value="recent">Mais recentes</SelectItem>
+              <SelectItem value="manual">Ordem manual</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+          <FilterChip active={fFeatured} onClick={() => setFFeatured(!fFeatured)} icon={<Star className="h-3 w-3" />}>Em destaque</FilterChip>
+          <FilterChip active={fNew} onClick={() => setFNew(!fNew)} icon={<Sparkles className="h-3 w-3" />}>Novos</FilterChip>
+          <FilterChip active={fNoUrl} onClick={() => setFNoUrl(!fNoUrl)} icon={<AlertTriangle className="h-3 w-3" />}>Sem URL</FilterChip>
+          <FilterChip active={fHidden} onClick={() => setFHidden(!fHidden)}>Ocultos</FilterChip>
+          {(activeFilters > 0 || query) && (
+            <button onClick={clearFilters} className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 underline">Limpar</button>
+          )}
+          <span className="ml-auto text-xs text-muted-foreground">{filtered.length} resultado{filtered.length === 1 ? "" : "s"}</span>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-        <Card className={`p-4 flex items-center gap-3 ${featuredCount > MAX_FEATURED ? "border-destructive" : ""}`}>
-          <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
-          <div className="flex-1">
-            <p className="text-sm font-semibold">Destaques: {featuredCount}/{MAX_FEATURED}</p>
-            <p className="text-xs text-muted-foreground">Marca até {MAX_FEATURED} para aparecerem em primeiro plano.</p>
-          </div>
-        </Card>
-        <Card className={`p-4 flex items-center gap-3 ${missingUrl > 0 ? "border-amber-500/60 bg-amber-50/40" : ""}`}>
-          <AlertTriangle className={`h-5 w-5 ${missingUrl > 0 ? "text-amber-600" : "text-muted-foreground"}`} />
-          <div className="flex-1">
-            <p className="text-sm font-semibold">{missingUrl} sem URL Gourmeats</p>
-            <p className="text-xs text-muted-foreground">Adiciona o link da carta para os clientes poderem abrir.</p>
-          </div>
-        </Card>
-      </div>
-
-      {loading ? (
-        <p className="text-sm text-muted-foreground">A carregar…</p>
-      ) : (
-        <div className="space-y-2">
-          {rows.map((r, i) => (
-            <Card key={r.id} className={`p-4 flex items-start gap-3 ${r.featured ? "border-amber-400/70" : ""}`}>
-              <div className="flex flex-col gap-1">
-                <button className="text-muted-foreground hover:text-foreground disabled:opacity-30" onClick={() => move(r, -1)} disabled={i === 0} aria-label="Subir">
-                  <ArrowUp className="h-4 w-4" />
-                </button>
-                <button className="text-muted-foreground hover:text-foreground disabled:opacity-30" onClick={() => move(r, 1)} disabled={i === rows.length - 1} aria-label="Descer">
-                  <ArrowDown className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="flex items-center gap-3 flex-1 min-w-0">
+      {/* Scrollable list */}
+      <div className="flex-1 overflow-y-auto pt-3 pr-1 -mr-1">
+        {loading ? (
+          <p className="text-sm text-muted-foreground">A carregar…</p>
+        ) : filtered.length === 0 ? (
+          <p className="text-sm text-muted-foreground py-8 text-center">Nenhum restaurante corresponde aos filtros.</p>
+        ) : (
+          <div className="space-y-1.5">
+            {filtered.map((r, i) => (
+              <Card key={r.id} className={`px-3 py-2 flex items-center gap-2 ${r.featured ? "border-amber-400/70" : ""}`}>
+                {sortKey === "manual" && (
+                  <div className="flex flex-col">
+                    <button className="text-muted-foreground hover:text-foreground disabled:opacity-30" onClick={() => move(r, -1)} disabled={i === 0} aria-label="Subir">
+                      <ArrowUp className="h-3.5 w-3.5" />
+                    </button>
+                    <button className="text-muted-foreground hover:text-foreground disabled:opacity-30" onClick={() => move(r, 1)} disabled={i === filtered.length - 1} aria-label="Descer">
+                      <ArrowDown className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                )}
                 {r.logo_url ? (
-                  <img src={r.logo_url} alt={r.name} className="w-10 h-10 rounded-full object-cover shrink-0" />
+                  <img src={r.logo_url} alt={r.name} className="w-8 h-8 rounded-full object-cover shrink-0" />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-muted shrink-0" />
+                  <div className="w-8 h-8 rounded-full bg-muted shrink-0" />
                 )}
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <p className="font-semibold text-sm truncate">{r.name}</p>
                     {r.featured && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
@@ -228,49 +321,51 @@ function RestaurantsAdmin() {
                     )}
                     {!r.link_url && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
-                        <AlertTriangle className="h-3 w-3" /> Sem URL Gourmeats
+                        <AlertTriangle className="h-3 w-3" /> Sem URL
                       </span>
                     )}
+                    {!r.visible && (
+                      <span className="inline-flex items-center text-[10px] font-semibold bg-muted text-muted-foreground px-1.5 py-0.5 rounded">Oculto</span>
+                    )}
                   </div>
-                  {r.link_url ? (
-                    <a href={r.link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground truncate max-w-full">
-                      <LinkIcon className="h-3 w-3" /> {r.link_url}
+                  {r.link_url && (
+                    <a href={r.link_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground truncate max-w-full">
+                      <LinkIcon className="h-3 w-3" /> <span className="truncate">{r.link_url}</span>
                     </a>
-                  ) : null}
+                  )}
                 </div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  onClick={() => toggleFeatured(r)}
-                  className="p-2 rounded hover:bg-muted"
-                  aria-label={r.featured ? "Remover destaque" : "Marcar destaque"}
-                  title={r.featured ? "Remover destaque" : "Marcar destaque"}
-                >
-                  <Star className={`h-4 w-4 ${r.featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}`} />
-                </button>
-                <button
-                  onClick={async () => {
-                    const { error } = await supabase.from("restaurants").update({ is_new: !r.is_new }).eq("id", r.id);
-                    if (error) toast.error(error.message); else load();
-                  }}
-                  className="p-2 rounded hover:bg-muted"
-                  aria-label={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
-                  title={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
-                >
-                  <Sparkles className={`h-4 w-4 ${r.is_new ? "text-teal-600" : "text-muted-foreground"}`} />
-                </button>
-                <Switch checked={r.visible} onCheckedChange={() => toggleVisible(r)} />
-                <Button size="icon" variant="ghost" onClick={() => { setEditing({ ...r }); setOpen(true); }}>
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="ghost" className="text-destructive" onClick={() => remove(r.id)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => toggleFeatured(r)}
+                    className="p-1.5 rounded hover:bg-muted"
+                    title={r.featured ? "Remover destaque" : "Marcar destaque"}
+                  >
+                    <Star className={`h-4 w-4 ${r.featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}`} />
+                  </button>
+                  <button
+                    onClick={async () => {
+                      const { error } = await supabase.from("restaurants").update({ is_new: !r.is_new }).eq("id", r.id);
+                      if (error) toast.error(error.message); else load();
+                    }}
+                    className="p-1.5 rounded hover:bg-muted"
+                    title={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
+                  >
+                    <Sparkles className={`h-4 w-4 ${r.is_new ? "text-teal-600" : "text-muted-foreground"}`} />
+                  </button>
+                  <Switch checked={r.visible} onCheckedChange={() => toggleVisible(r)} />
+                  <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => { setEditing({ ...r }); setOpen(true); }}>
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive" onClick={() => remove(r.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-lg">

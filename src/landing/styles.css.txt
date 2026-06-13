@@ -53,8 +53,9 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 /* gallery de vistas */
 #screens{padding:80px 0 0;overflow:hidden}
 .gallery-wrap{margin-top:40px;display:grid;grid-template-columns:220px 1fr;gap:0;align-items:center;max-width:1280px;margin-left:auto;margin-right:auto;padding:0 24px 56px;box-sizing:border-box}
-.gallery-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);overflow:hidden;border-radius:18px}
-.gallery-slide{min-width:100%;display:flex;align-items:center;gap:48px;padding:8px 8px 8px 32px;box-sizing:border-box}
+.gallery-track{position:relative}
+.gallery-slide{display:none;align-items:center;gap:48px;padding:8px 8px 8px 32px;box-sizing:border-box}
+.gallery-slide.active{display:flex;animation:fIn .25s ease}
 .gallery-phone{flex-shrink:0;width:240px}
 .gallery-phone-inner{background:var(--app);border-radius:30px;border:6px solid #1a1a18;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.18);position:relative}
 .gallery-phone-inner img{width:100%;display:block}
@@ -358,9 +359,13 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
 /* Tablet */
 @media(max-width:900px){
   .hero-in,.feat-in{grid-template-columns:1fr;gap:36px}
-  .gallery-slide{flex-direction:column;gap:24px;padding:0 20px}
-  .gallery-phone{width:200px;margin:0 auto}
+  .gallery-slide{flex-direction:column;gap:18px;padding:0 20px}
+  .gallery-slide.active{display:flex}
+  .gallery-phone{width:180px;margin:0 auto}
   .gallery-info{max-width:100%}
+  .gallery-h{font-size:clamp(20px,5vw,24px);margin-bottom:8px}
+  .gallery-p{font-size:14px;margin-bottom:12px}
+  .gallery-pts{gap:6px}
   
   .feat-in.rev{direction:ltr}
   .demo-inner{flex-direction:column;align-items:center;gap:20px}
@@ -375,7 +380,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
 @media(max-width:600px){
   /* Layout base */
   .wrap,.wrap-sm{padding:0 16px}
-  #hero{padding:84px 0 40px}
+  #hero{padding:72px 0 28px}
   .how-grid{grid-template-columns:1fr}
   .top-r .btn-ghost{display:none}
   .logos-row{gap:8px}
@@ -410,29 +415,29 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .fc:last-of-type{bottom:18%!important;left:-5%!important;width:130px!important}
 
   /* Sections */
-  .feat{padding:52px 0}
-  #how{padding:52px 0}
-  #proof{padding:52px 0}
-  #faq{padding:52px 0}
-  #final{padding:52px 0 40px}
-  #logos{padding:28px 0}
+  .feat{padding:36px 0}
+  #how{padding:36px 0}
+  #proof{padding:36px 0}
+  #faq{padding:36px 0}
+  #final{padding:40px 0 28px}
+  #logos{padding:20px 0}
   .logos-lbl{font-size:11px;margin-bottom:14px}
 
   /* Section headings */
-  h2{font-size:clamp(22px,6vw,30px)}
-  .sec-sub{font-size:14px}
-  .sec-head{margin-bottom:28px}
+  h2{font-size:clamp(20px,5.5vw,28px)}
+  .sec-sub{font-size:13.5px}
+  .sec-head{margin-bottom:20px}
   .sec-kicker{font-size:11px}
-  .feat-kicker{font-size:11px;margin-bottom:10px}
-  .feat-h{font-size:clamp(20px,5.5vw,26px);margin-bottom:10px}
-  .feat-lead{font-size:14px;margin-bottom:16px}
+  .feat-kicker{font-size:11px;margin-bottom:8px}
+  .feat-h{font-size:clamp(19px,5vw,24px);margin-bottom:8px}
+  .feat-lead{font-size:13.5px;margin-bottom:12px}
   .feat-pts li{font-size:13px}
 
   /* Feature phone */
   .feat-phone{width:190px}
 
   /* Demo section */
-  #demo{padding:44px 0}
+  #demo{padding:32px 0}
   .demo-inner{gap:16px}
   .demo-side{max-width:100%;padding:0 4px}
   .ds-h{font-size:clamp(16px,4.5vw,20px)}
