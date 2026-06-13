@@ -245,6 +245,11 @@
     </div>
   </div>
   <div class="gallery-wrap">
+    <div class="gallery-nav" role="tablist" aria-label="Vistas da app">
+      <button class="gnav-btn active" onclick="goSlide(0)" role="tab" aria-selected="true"><span class="gnav-num">01</span><span class="gnav-lbl">Vista de vídeo</span><span class="gnav-bar" aria-hidden="true"></span></button>
+      <button class="gnav-btn" onclick="goSlide(1)" role="tab" aria-selected="false"><span class="gnav-num">02</span><span class="gnav-lbl">Vista de menu</span><span class="gnav-bar" aria-hidden="true"></span></button>
+      <button class="gnav-btn" onclick="goSlide(2)" role="tab" aria-selected="false"><span class="gnav-num">03</span><span class="gnav-lbl">Minha lista</span><span class="gnav-bar" aria-hidden="true"></span></button>
+    </div>
     <div class="gallery-track" id="galleryTrack">
       <div class="gallery-slide active" id="gslide-0">
         <div class="gallery-phone">
