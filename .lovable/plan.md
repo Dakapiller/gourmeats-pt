@@ -1,70 +1,63 @@
-# Live Demo Controlada + Revisão Premium UI/UX
+# Plano: CTAs profissionais + nova paleta Gourmeats
 
-## Parte 1 — Demo "live controlada"
+## 1. Correções de copy (todos os CTAs revistos)
 
-Transformar a secção `#demo` num percurso cinematográfico com cursor automático e intervenção opcional.
+| Onde | Atual | Novo |
+|---|---|---|
+| Topbar | "Falar connosco" | "Falar com a equipa" |
+| Hero | "Quero ter Gourmeats no meu restaurante" | "Pedir demonstração" |
+| Demo — fim (s-cta, dentro do telemóvel) | "Falar com o **Andre**" | "Falar com o **André**" |
+| Demo — fim (texto) | "Foi isto que viu. E a experiencia real dos seus clientes." | "Foi isto que viu — a experiência real dos seus clientes." |
+| Demo CTA box (fora) | "Quer isto no seu restaurante?" / "Falar connosco agora" | "Pronto para oferecer esta experiência?" / "Agendar demonstração" |
+| How-it-works | "Começar agora — falar com o André" | "Agendar demonstração com o André" |
+| Final | "Falar com o André no WhatsApp" | "Falar com o André via WhatsApp" |
+| Final email | "Prefere por e-mail? andre.duque@..." | "Prefere e-mail? andre.duque@..." |
+| Mensagens pré-preenchidas WhatsApp | "Olá André, vi a landing..." / "vi a demo e quero a Gourmeats..." | Uniformizar: "Olá André, vi a apresentação da Gourmeats e gostaria de agendar uma demonstração para o meu restaurante." |
+| FAB aria-label | "WhatsApp" | "Falar via WhatsApp" |
 
-**Comportamento**
-- Auto-play arranca quando a demo entra no viewport (já existe).
-- Um **cursor falso** animado aparece no telemóvel e desloca-se suavemente até ao alvo de cada passo (bandeira, botão Add, item do menu, "Chamar empregado", etc.), com um "tap pulse" no momento da ação.
-- O alvo do passo recebe um **glow/ring pulsante** sincronizado com a chegada do cursor.
-- **Barra de progresso clicável** por cima do telemóvel: cada passo é um segmento, com label curta no hover, salto direto ao clicar.
-- **Controlos visíveis** discretos por baixo: ⏮ Anterior · ⏯ Play/Pause · ⏭ Próximo · ↺ Recomeçar. Estado atual ("3 / 9 · a avançar automaticamente" ou "controlo manual") fica visível.
-- Se o utilizador tocar no ecrã do telemóvel ou usar os controlos manuais → muda para `manualMode`, cursor falso desaparece, indicador passa a "controlo manual" com botão "Retomar auto".
-- No último passo, cursor desaparece, aparece CTA WhatsApp + botão "Ver outra vez".
-- Tempo por passo ajustado: 4.5s (legível, não apressado). Transições suaves entre painéis com fade+slide curto.
+Sem alterações de funcionalidade, apenas texto + `href` (mensagens WA).
 
-**Acessibilidade / performance**
-- Pausa auto se `prefers-reduced-motion` (sem cursor animado, transições simples).
-- Pausa se a aba perde foco ou se o utilizador faz scroll para fora.
-- Cursor é puro DOM (div + CSS transform), sem libs extras.
+## 2. Nova paleta (baseada no logo)
 
-## Parte 2 — Revisão Premium UI/UX (look & feel)
+Substituir o amarelo (`--y #F5C800`, `--yd`, `--ys`, gradientes amber, halos warm) por:
 
-Passagem global de polimento, sem alterar copy nem estrutura de conteúdo.
+```text
+--ink   : #1F1F1F   (grafite do "gourmeats" do logo)
+--ink2  : #2E2E2E
+--ink3  : #6B6B6B
+--brand : #14B5A6   (teal do play-button do logo)
+--brand-2: #0E8F84  (teal escuro — hover/gradient)
+--brand-soft: #E6F7F5 (fundo suave, substitui --ys)
+--brand-line: #BDE7E2 (border suave, substitui #F0D060)
+--wa    : #25D366   (mantém — botões WhatsApp)
+--wa-2  : #1FB755
+```
 
-**Design system (`src/styles.css`)**
-- Refinar paleta semântica: fundo `#0B0B0C` quase preto, superfícies com gradiente subtil, primário dourado/âmbar quente (mantendo a identidade Gourmeats), texto com hierarquia em 3 níveis de opacidade.
-- Tipografia: heading display (ex.: Fraunces ou Instrument Serif) + sans neutro (Inter/Geist) para corpo. Tracking apertado nos H1/H2, line-height generoso no corpo.
-- Tokens novos: `--gradient-hero`, `--gradient-surface`, `--shadow-elegant`, `--shadow-glow`, `--radius-xl`, transições `--ease-out-expo`.
-- Animações reutilizáveis: `fade-in-up`, `reveal-on-scroll` (IntersectionObserver), `shimmer` para realces.
+Aplicação:
+- `hero-kicker` ("DEMO ENERGY/CONCLUÍDA ✓"): fundo `--brand-soft`, texto `--brand-2`, border `--brand-line`. Sem gradiente amarelo.
+- `demo-cta-box`: mesmo tratamento — fundo `--brand-soft` levíssimo, border `--brand-line`.
+- Progress bar da demo (segmentos): ativos passam a `--brand`.
+- Botão play da demo (`.ds-ctrl-play`): fundo `--brand`, hover `--brand-2`, ícone branco.
+- `.ds-restart` ("Recomeçar a demo"): border `--brand`, sombra teal subtil.
+- `.tap-hint`: border e glow em teal.
+- `--grad-hero` / `--grad-warm` no hero: substituir por gradiente neutro (off-white → branco) com halo `radial-gradient(... rgba(20,181,166,.08), transparent)`. Sem amarelo de fundo.
+- `--grad-amber` (usado em hovers): substituir por `linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%)`.
+- `cta-wa` (telemóvel) e `btn-wa` continuam **verde WhatsApp** — é cor de marca da app + sinal universal, mantém-se.
+- FAB WhatsApp continua verde.
 
-**Hero**
-- Eyebrow + headline maior com kerning premium, sub-headline em tom mais baixo.
-- Mockup do telemóvel com sombra suave + leve glow âmbar, frame mais limpo.
-- CTA principal com micro-interação (hover lift + shimmer subtil).
-- Indicador de scroll discreto.
+## 3. Ficheiros a tocar
 
-**Secções**
-- Espaçamento vertical consistente (clamp responsivo), divisores subtis em vez de linhas duras.
-- Cartões (galeria, "como funciona", pricing): bordas 1px com gradiente, hover lift + ring âmbar, radius generoso.
-- Galeria de telemóveis: alinhamento, sombras uniformes, legendas em caps tracking largo.
-- "Como funciona" (steps): numeração tipográfica grande em ghost, conector vertical subtil.
-- FAQ / pricing: tipografia mais arejada, separadores leves.
-- Footer: condensado, link WhatsApp destacado.
+- `src/landing/body.html` — copy de todos os CTAs e `wa.me` query strings; "Andre" → "André"; texto da `s-cta`.
+- `src/landing/styles.css.txt` — variáveis `--y/--yd/--ys`, `--grad-warm`, `--grad-amber`, `hero-kicker`, `demo-cta-box`, `ds-ctrl-play`, `ds-restart`, `tap-hint`, `proof-card` hover, halo do hero, e qualquer `rgba(245,200,0,...)` → `rgba(20,181,166,...)`.
+- `src/landing/script1.js` — só se houver cores inline (verificar barra de progresso/cursor); sem alterações de lógica.
 
-**Navegação**
-- Top bar com `backdrop-blur` quando scrolla, transição suave, logo nítido.
-- Âncoras com `scroll-margin-top` para não ficar atrás da nav.
+## 4. Fora do âmbito
 
-**Responsivo**
-- Revisão mobile (≤390px): padding, tamanhos de fonte fluidos (`clamp`), CTA full-width, demo phone reescala para não cortar.
-- Tablet: garantir que os mockups não ficam gigantes.
+- Backoffice, schema, RLS, server functions, layout/estrutura, animações da demo.
+- Cor verde WhatsApp dos botões WA (mantém-se).
 
-**Detalhes premium**
-- Cursor (`a`, `button`) com transição suave.
-- Estados de foco visíveis (ring âmbar) para acessibilidade.
-- Imagens com `loading="lazy"` e `decoding="async"`.
-- Smooth scroll global.
+## Notas técnicas
 
-## Detalhes técnicos
-
-- **Ficheiros tocados**: `src/landing/body.html` (markup da demo: cursor, controlos, progress; pequenos ajustes de classes nas restantes secções), `src/landing/script1.js` (state machine da demo, cursor mover, alvos por passo, observer de reduced-motion), `src/styles.css` (tokens, utilitários, animações), e o componente React que injeta o landing (apenas se for preciso passar props/estado).
-- **Sem alterações** ao backoffice, schema, RLS, server functions ou copy.
-- **Sem dependências novas** — tudo nativo (Web Animations API + CSS).
-
-## Fora de âmbito
-
-- Refazer o backoffice (`/admin/*`) — fica para um pedido seguinte se quiseres.
-- Alterar conteúdo/textos da landing.
-- Trocar imagens base64 atuais.
+- Manter contraste AA: teal `#14B5A6` sobre branco passa para texto bold ≥14px; em corpo de texto pequeno usar `--brand-2 #0E8F84`.
+- Todos os `box-shadow` com tinta amarela passam a teal com a mesma opacidade.
+- Sem novas dependências; é trabalho puramente de tokens + copy.
