@@ -67,18 +67,30 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       )
       .join("");
 
-    const logosHtml = (restaurants.data ?? [])
-      .map((r) => {
-        const href = r.link_url ? ` href="${escapeHtml(r.link_url)}" target="_blank" rel="noopener"` : "";
-        const tag = r.link_url ? "a" : "div";
-        const img = r.logo_url
-          ? `<img src="${escapeHtml(r.logo_url)}" alt="${escapeHtml(r.name)}">`
-          : `<div class="logo-card-ph">${escapeHtml(r.name)}</div>`;
-        return `<${tag} class="logo-card"${href}>${img}<div class="logo-card-name">${escapeHtml(
-          r.name,
-        )}</div>${r.link_url ? '<div class="logo-card-cta">Ver carta →</div>' : ""}</${tag}>`;
-      })
-      .join("");
+    const renderLogoCard = (r: { name: string; logo_url: string | null; link_url: string | null }) => {
+      const href = r.link_url ? ` href="${escapeHtml(r.link_url)}" target="_blank" rel="noopener"` : "";
+      const tag = r.link_url ? "a" : "div";
+      const img = r.logo_url
+        ? `<img src="${escapeHtml(r.logo_url)}" alt="${escapeHtml(r.name)}">`
+        : `<div class="logo-card-ph">${escapeHtml(r.name)}</div>`;
+      return `<${tag} class="logo-card"${href}>${img}<div class="logo-card-name">${escapeHtml(
+        r.name,
+      )}</div>${r.link_url ? '<div class="logo-card-cta">Ver carta →</div>' : ""}</${tag}>`;
+    };
+
+    const allRestaurants = restaurants.data ?? [];
+    const featured = allRestaurants
+      .filter((r) => r.featured)
+      .sort((a, b) => (a.featured_order ?? 999) - (b.featured_order ?? 999));
+    const others = allRestaurants.filter((r) => !r.featured);
+    const featuredList = featured.length > 0 ? featured : allRestaurants;
+    const extraList = featured.length > 0 ? others : [];
+    const logosHtml = featuredList.map(renderLogoCard).join("");
+    const logosExtraHtml = extraList.map(renderLogoCard).join("");
+    const logosToggleHtml = extraList.length > 0
+      ? `<button type="button" class="logos-toggle" data-logos-toggle aria-expanded="false"><span class="logos-toggle-more">Ver todos os restaurantes (${allRestaurants.length})</span><span class="logos-toggle-less">Mostrar menos</span></button>`
+      : "";
+
 
     const proofHtml = (proof.data ?? [])
       .map(
