@@ -671,3 +671,9 @@ summary:hover{background:var(--ys)}
 .logos-toggle .logos-toggle-less{display:none}
 .logos-toggle.is-open .logos-toggle-more{display:none}
 .logos-toggle.is-open .logos-toggle-less{display:inline}
+
+/* "Novo" badge on logo card */
+.logo-card{position:relative}
+.logo-card-new{position:absolute;top:-8px;right:-8px;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--brand,#14B5A6),var(--brand-2,#0E8F84));padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(20,181,166,.35);animation:newPulse 2.4s ease-in-out infinite}
+@keyframes newPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.logo-card.is-new{border-color:var(--brand-line,#BDE7E2)}
