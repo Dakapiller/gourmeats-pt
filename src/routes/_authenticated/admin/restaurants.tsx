@@ -221,6 +221,11 @@ function RestaurantsAdmin() {
                         <Star className="h-3 w-3 fill-amber-500 text-amber-500" /> Destaque
                       </span>
                     )}
+                    {r.is_new && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">
+                        <Sparkles className="h-3 w-3" /> Novo
+                      </span>
+                    )}
                     {!r.link_url && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
                         <AlertTriangle className="h-3 w-3" /> Sem URL Gourmeats
