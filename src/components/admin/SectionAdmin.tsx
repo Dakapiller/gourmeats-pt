@@ -316,7 +316,7 @@ export function SingletonAdmin({
       .select("*")
       .eq("id", 1)
       .maybeSingle()
-      .then(({ data: d }) => setData((d as Record<string, any>) ?? { id: 1 }));
+      .then(({ data: d }) => setData((d as unknown as Record<string, any>) ?? { id: 1 }));
   }, [table]);
 
   if (!data) return <p className="text-sm text-muted-foreground">A carregar…</p>;
