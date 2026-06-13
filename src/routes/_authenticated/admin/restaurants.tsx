@@ -248,6 +248,17 @@ function RestaurantsAdmin() {
                 >
                   <Star className={`h-4 w-4 ${r.featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}`} />
                 </button>
+                <button
+                  onClick={async () => {
+                    const { error } = await supabase.from("restaurants").update({ is_new: !r.is_new }).eq("id", r.id);
+                    if (error) toast.error(error.message); else load();
+                  }}
+                  className="p-2 rounded hover:bg-muted"
+                  aria-label={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
+                  title={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
+                >
+                  <Sparkles className={`h-4 w-4 ${r.is_new ? "text-teal-600" : "text-muted-foreground"}`} />
+                </button>
                 <Switch checked={r.visible} onCheckedChange={() => toggleVisible(r)} />
                 <Button size="icon" variant="ghost" onClick={() => { setEditing({ ...r }); setOpen(true); }}>
                   <Pencil className="h-4 w-4" />
