@@ -114,6 +114,7 @@ function RestaurantsAdmin() {
       visible: editing.visible,
       featured: editing.featured,
       featured_order: editing.featured ? (editing.featured_order ?? featuredCount + 1) : null,
+      is_new: editing.is_new,
     };
     const { error } = editing.id
       ? await supabase.from("restaurants").update(payload).eq("id", editing.id)
