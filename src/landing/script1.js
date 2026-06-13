@@ -87,12 +87,16 @@ function setSide(i){
     dlbl.textContent=d.l; dh.textContent=d.h; dp.textContent=d.p;
     dhint.style.display=d.hint?'inline-flex':'none';
     if(d.hint)dhintt.textContent=d.hint;
-    drebtn.style.display=i===N-1?'inline-flex':'none';
-    if(dctrls)dctrls.style.display=i===N-1?'none':'flex';
+    const _drebtn=document.getElementById('drebtn');
+    const _dctrls=document.getElementById('dctrls');
+    const _dcount=document.getElementById('dcount');
+    const _dauto=document.getElementById('dauto');
+    if(_drebtn)_drebtn.style.display=i===N-1?'inline-flex':'none';
+    if(_dctrls)_dctrls.style.display=i===N-1?'none':'flex';
     const demoCta=document.getElementById('demo-cta-box');
     if(demoCta)demoCta.style.display=i===N-1?'block':'none';
-    dauto.style.display=i===N-1?'none':'inline-flex';
-    if(dcount)dcount.textContent=i+1;
+    if(_dauto)_dauto.style.display=i===N-1?'none':'inline-flex';
+    if(_dcount)_dcount.textContent=i+1;
     [...dprog.children].forEach((s,idx)=>{
       s.classList.remove('active');
       s.classList.toggle('done',idx<i);
