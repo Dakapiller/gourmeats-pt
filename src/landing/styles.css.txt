@@ -69,7 +69,7 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 .gallery-nav{display:flex;gap:8px;padding:28px calc((100vw - 1100px)/2) 56px;flex-wrap:wrap}
 .gnav-btn{padding:9px 18px;border-radius:100px;border:1.5px solid var(--line);background:transparent;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:inherit}
 .gnav-btn:hover{border-color:var(--yd);color:var(--yd)}
-.gnav-btn.active{background:var(--y);border-color:var(--y);color:#000}
+.gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
 
 /* phone hero */
 .phone-wrap{position:relative;display:flex;justify-content:center}
@@ -621,8 +621,8 @@ summary:hover{background:var(--ys)}
 .ds-ctrls{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px}
 .ds-ctrl{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--ink2);border:1px solid var(--line);border-radius:50%;font-size:16px;font-weight:600;cursor:pointer;transition:all .18s var(--ease);font-family:inherit;line-height:1}
 .ds-ctrl:hover{border-color:var(--y);color:var(--ink);background:var(--ys);transform:translateY(-1px)}
-.ds-ctrl-play{background:var(--y);border-color:var(--y);color:#000;font-size:11px;width:42px;height:42px;box-shadow:0 6px 14px -4px rgba(20,181,166,.5)}
-.ds-ctrl-play:hover{background:#0E8F84;border-color:#0E8F84;color:#000}
+.ds-ctrl-play{background:var(--brand);border-color:var(--brand);color:#fff;font-size:11px;width:42px;height:42px;box-shadow:0 6px 14px -4px rgba(20,181,166,.5)}
+.ds-ctrl-play:hover{background:var(--brand-2);border-color:var(--brand-2);color:#fff}
 .ds-ctrl-restart{font-size:18px}
 
 .tap-hint{background:#fff;border-color:rgba(20,181,166,.6);box-shadow:0 2px 14px -4px rgba(20,181,166,.4),0 0 0 4px rgba(20,181,166,.06);margin-top:14px}
