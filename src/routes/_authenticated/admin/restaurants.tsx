@@ -14,7 +14,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon } from "lucide-react";
+import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon, Sparkles } from "lucide-react";
 
 type Row = {
   id: string;
