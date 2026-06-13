@@ -150,9 +150,9 @@ function AuthPage() {
                 {loading ? "A criar..." : "Criar conta"}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
-                A primeira conta criada precisa de receber a role <code>admin</code> manualmente no
-                backend.
+                O primeiro registo recebe automaticamente acesso de administrador.
               </p>
+
             </form>
           </TabsContent>
         </Tabs>
