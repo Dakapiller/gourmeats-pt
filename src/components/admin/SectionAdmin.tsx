@@ -235,6 +235,12 @@ export function ListAdmin({
                         rows={4}
                         required={f.required}
                       />
+                    ) : f.type === "image" ? (
+                      <ImageField
+                        value={editing[f.name] ?? ""}
+                        onChange={(url) => setEditing({ ...editing, [f.name]: url })}
+                        bucket={f.bucket ?? "restaurant-logos"}
+                      />
                     ) : (
                       <Input
                         id={f.name}
