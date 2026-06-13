@@ -601,9 +601,7 @@ summary:hover{background:var(--ys)}
 /* ===== DEMO — premium controlled live demo ===== */
 #demo{background:linear-gradient(180deg,var(--bg2) 0%,#fff 100%)}
 .demo-side{max-width:280px}
-.ds-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 18px;font-size:11px}
-.ds-count{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink2);letter-spacing:.04em}
-.ds-count-sep{color:var(--ink3);margin:0 2px}
+.ds-meta{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 18px;font-size:11px}
 .ds-auto{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--yd);background:var(--ys);border:1px solid #EFD774;padding:4px 10px;border-radius:100px}
 .ds-auto-dot{width:6px;height:6px;border-radius:50%;background:var(--y);box-shadow:0 0 0 3px rgba(245,200,0,.2);animation:autoPulseS 1.6s ease-in-out infinite}
 .ds-auto.is-manual{background:#F5F4F0;border-color:var(--line);color:var(--ink3)}
