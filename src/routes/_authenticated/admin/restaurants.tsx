@@ -28,6 +28,21 @@ type SortKey = "smart" | "az" | "za" | "recent" | "manual";
 const normalize = (s: string) =>
   s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+function FilterChip({ active, onClick, icon, children }: { active: boolean; onClick: () => void; icon?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors ${
+        active
+          ? "bg-foreground text-background border-foreground"
+          : "bg-background text-muted-foreground border-border hover:text-foreground hover:bg-muted"
+      }`}
+    >
+      {icon}{children}
+    </button>
+  );
+}
+
 type Row = {
   id: string;
   name: string;
