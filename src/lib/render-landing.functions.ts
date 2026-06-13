@@ -29,7 +29,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       sb.from("hero_section").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_stats").select("id, value, label").eq("visible", true).order("sort_order"),
       sb.from("proof_cards").select("id, quote, author_name, author_role").eq("visible", true).order("sort_order"),
-      sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order").eq("visible", true).order("sort_order"),
+      sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order, is_new").eq("visible", true).order("sort_order"),
       sb.from("faq_items").select("id, question, answer").eq("visible", true).order("sort_order"),
       sb.from("cta_section").select("*").eq("id", 1).maybeSingle(),
     ]);
