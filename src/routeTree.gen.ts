@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
+import { Route as AuthenticatedAdminRestaurantsRouteImport } from './routes/_authenticated/admin/restaurants'
 import { Route as AuthenticatedAdminProofRouteImport } from './routes/_authenticated/admin/proof'
 import { Route as AuthenticatedAdminHeroRouteImport } from './routes/_authenticated/admin/hero'
 
@@ -60,6 +61,12 @@ const AuthenticatedAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminRestaurantsRoute =
+  AuthenticatedAdminRestaurantsRouteImport.update({
+    id: '/restaurants',
+    path: '/restaurants',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminProofRoute = AuthenticatedAdminProofRouteImport.update({
   id: '/proof',
   path: '/proof',
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
   '/admin/proof': typeof AuthenticatedAdminProofRoute
+  '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -89,6 +97,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/hero': typeof AuthenticatedAdminHeroRoute
   '/admin/proof': typeof AuthenticatedAdminProofRoute
+  '/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -102,6 +111,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/admin/hero': typeof AuthenticatedAdminHeroRoute
   '/_authenticated/admin/proof': typeof AuthenticatedAdminProofRoute
+  '/_authenticated/admin/restaurants': typeof AuthenticatedAdminRestaurantsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/hero'
     | '/admin/proof'
+    | '/admin/restaurants'
     | '/admin/settings'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin/hero'
     | '/admin/proof'
+    | '/admin/restaurants'
     | '/admin/settings'
     | '/admin'
   id:
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/admin/hero'
     | '/_authenticated/admin/proof'
+    | '/_authenticated/admin/restaurants'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/restaurants': {
+      id: '/_authenticated/admin/restaurants'
+      path: '/restaurants'
+      fullPath: '/admin/restaurants'
+      preLoaderRoute: typeof AuthenticatedAdminRestaurantsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/proof': {
       id: '/_authenticated/admin/proof'
       path: '/proof'
@@ -227,6 +247,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminHeroRoute: typeof AuthenticatedAdminHeroRoute
   AuthenticatedAdminProofRoute: typeof AuthenticatedAdminProofRoute
+  AuthenticatedAdminRestaurantsRoute: typeof AuthenticatedAdminRestaurantsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -235,6 +256,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
   {
     AuthenticatedAdminHeroRoute: AuthenticatedAdminHeroRoute,
     AuthenticatedAdminProofRoute: AuthenticatedAdminProofRoute,
+    AuthenticatedAdminRestaurantsRoute: AuthenticatedAdminRestaurantsRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
