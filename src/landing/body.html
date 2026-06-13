@@ -75,11 +75,19 @@
     <div class="demo-inner">
       <div class="demo-side" id="dside">
         <div class="ds-prog" id="dprog"></div>
-        <div class="ds-auto" id="dauto"><span class="ds-auto-dot"></span><span id="dauto-txt">a avançar automaticamente</span></div>
+        <div class="ds-meta">
+          <span class="ds-auto" id="dauto"><span class="ds-auto-dot"></span><span id="dauto-txt">a avançar automaticamente</span></span>
+        </div>
         <div class="ds-lbl" id="dlbl">Largo São Domingos · Lisboa</div>
         <div class="ds-h"  id="dh">O cliente abre o menu em segundos.</div>
         <div class="ds-p"  id="dp">A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração manual.</div>
         <div class="tap-hint" id="dhint"><span class="tap">👆</span><span id="dhintt">Toque em "Comida"</span></div>
+        <div class="ds-ctrls" id="dctrls" role="group" aria-label="Controlos da demo">
+          <button class="ds-ctrl" id="dprev" aria-label="Passo anterior" title="Anterior">‹</button>
+          <button class="ds-ctrl ds-ctrl-play" id="dplay" aria-label="Pausa" title="Play/Pause"><span id="dplay-i">❚❚</span></button>
+          <button class="ds-ctrl" id="dnext" aria-label="Próximo passo" title="Próximo">›</button>
+          <button class="ds-ctrl ds-ctrl-restart" id="dreset" aria-label="Recomeçar" title="Recomeçar">↺</button>
+        </div>
         <button class="ds-restart" id="drebtn">↺ Recomeçar a demo</button>
         <div class="demo-cta-box" id="demo-cta-box" style="display:none">
           <p class="demo-cta-msg">Quer isto no seu restaurante?</p>
@@ -87,8 +95,9 @@
         </div>
       </div>
 
-      <div class="demo-phone">
+      <div class="demo-phone" id="dphone">
         <div class="dn"></div>
+        <div class="fcursor" id="fcursor" aria-hidden="true"><span class="fcursor-ring"></span></div>
         <div class="dscreen">
 <div class="dsc on" id="ds1">
 <div class="home-top"><span class="hres">Reservas</span>
@@ -307,18 +316,18 @@
       <p class="sec-sub">A única coisa que o restaurante faz é imprimir o QR code.</p>
     </div>
     <div class="how-grid">
-      <div class="how-step">
+      <div class="how-step" data-n="1">
         <div class="how-num">1</div>
         <div class="how-h">Fala connosco</div>
         <p class="how-d">Uma conversa por WhatsApp ou visita ao restaurante. Percebemos o menu, os pratos em destaque e o que precisa de ser filmado — e definimos o plano juntos.</p>
       </div>
-      <div class="how-step">
+      <div class="how-step" data-n="2">
         <div class="how-num">2</div>
         <div class="how-h">Carta digital online</div>
         <div class="how-tag">em 24 horas</div>
         <p class="how-d">Inserem o conteúdo em português — o sistema traduz automaticamente para 24+ idiomas. A carta abre no idioma do telemóvel do cliente, sem qualquer ação manual.</p>
       </div>
-      <div class="how-step">
+      <div class="how-step" data-n="3">
         <div class="how-num">3</div>
         <div class="how-h">Vídeos dos pratos</div>
         <div class="how-tag">em 7 dias</div>
@@ -327,7 +336,7 @@
           <div class="how-opt"><strong>📸 Ou envia as suas fotos</strong>Se já tem fotos profissionais, criamos os vídeos a partir delas.</div>
         </div>
       </div>
-      <div class="how-step">
+      <div class="how-step" data-n="4">
         <div class="how-num">4</div>
         <div class="how-h">Imprime o QR code</div>
         <p class="how-d">Coloca nas mesas e está feito. A partir daqui, qualquer atualização de preços, pratos ou tradução fica em tempo real — sem reimprimir nada, nunca.</p>

@@ -18,18 +18,17 @@
 
 // ── DEMO ──
 const STEPS=[
-  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque na bandeira para ver os idiomas'},
-  {l:'24+ idiomas automáticos',          h:'A carta no idioma do cliente — sem fazer nada.', p:'Português, inglês, espanhol, francês, árabe, mandarim e mais 18. O cliente não precisa de selecionar nada.',   hint:'Toque em Português para continuar'},
-  {l:'Passo 1 · Couvert em vídeo',       h:'Pão com azeite. Ver é desejar.',                 p:'O cliente vê o pão artesanal com o azeite a ser vertido. Já não é uma linha de texto — é apetite imediato.',    hint:'Toque em "Add" para adicionar'},
-  {l:'Passo 2 · Entradas em vídeo',      h:'Salmão curado e fumado.',                        p:'O fumo a subir, as texturas, o empratamento. O cliente decide em segundos — e pede com confiança.',              hint:'Toque em "Add"'},
-  {l:'Passo 3 · Pratos principais',      h:'Ribs de porco ibérico em molho.',                p:'Pratos mais caros, mais bem apresentados. O vídeo justifica o preço — e o cliente fica entusiasmado.',           hint:'Toque em "Add"'},
-  {l:'Passo 4 · Mais pratos em vídeo',   h:'Lombo de Bacalhau com açorda cremosa.',          p:'A carta continua. Cada categoria tem os seus vídeos. Toque em Menu para ver a lista completa.',                  hint:'Toque em "Menu" na nav'},
-  {l:'Passo 5 · Vista de menu',          h:'A carta completa, organizada.',                  p:'Vista lista com vídeos reais de cada prato, preços e descrições. Toque no Bife de novilho para adicionar.',       hint:'Toque no Bife de novilho'},
-  {l:'Passo 6 · Minha lista',            h:'O pedido organizado, pronto a passar ao staff.', p:'Quando estiver pronto, chama o empregado com a lista completa. Sem erros, sem idas desnecessárias à mesa.',       hint:'Toque em "Pronto, chamar o empregado"'},
-  {l:'Demo concluída ✓',                 h:'É exatamente isto que os seus clientes vivem.',  p:'Carta em 24h, vídeos em 7 dias, 24+ idiomas automáticos. Fale connosco pelo botão abaixo.',                       hint:null},
+  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque na bandeira para ver os idiomas', tgt:'#tap-flag'},
+  {l:'24+ idiomas automáticos',          h:'A carta no idioma do cliente — sem fazer nada.', p:'Português, inglês, espanhol, francês, árabe, mandarim e mais 18. O cliente não precisa de selecionar nada.',   hint:'Toque em Português para continuar', tgt:'#tap-lang-pt'},
+  {l:'Passo 1 · Couvert em vídeo',       h:'Pão com azeite. Ver é desejar.',                 p:'O cliente vê o pão artesanal com o azeite a ser vertido. Já não é uma linha de texto — é apetite imediato.',    hint:'Toque em "Add" para adicionar', tgt:'#tap-add-pao'},
+  {l:'Passo 2 · Entradas em vídeo',      h:'Salmão curado e fumado.',                        p:'O fumo a subir, as texturas, o empratamento. O cliente decide em segundos — e pede com confiança.',              hint:'Toque em "Add"', tgt:'#tap-add-salmao'},
+  {l:'Passo 3 · Pratos principais',      h:'Ribs de porco ibérico em molho.',                p:'Pratos mais caros, mais bem apresentados. O vídeo justifica o preço — e o cliente fica entusiasmado.',           hint:'Toque em "Add"', tgt:'#tap-add-ribs'},
+  {l:'Passo 4 · Mais pratos em vídeo',   h:'Lombo de Bacalhau com açorda cremosa.',          p:'A carta continua. Cada categoria tem os seus vídeos. Toque em Menu para ver a lista completa.',                  hint:'Toque em "Add"', tgt:'#tap-add-bac'},
+  {l:'Passo 5 · Vista de menu',          h:'A carta completa, organizada.',                  p:'Vista lista com vídeos reais de cada prato, preços e descrições. Toque no Bife de novilho para adicionar.',       hint:'Toque no Bife de novilho', tgt:'#tap-bife'},
+  {l:'Passo 6 · Minha lista',            h:'O pedido organizado, pronto a passar ao staff.', p:'Quando estiver pronto, chama o empregado com a lista completa. Sem erros, sem idas desnecessárias à mesa.',       hint:'Toque em "Pronto, chamar o empregado"', tgt:'#tap-fim'},
+  {l:'Demo concluída ✓',                 h:'É exatamente isto que os seus clientes vivem.',  p:'Carta em 24h, vídeos em 7 dias, 24+ idiomas automáticos. Fale connosco pelo botão abaixo.',                       hint:null, tgt:null},
 ];
-
-const N=9;
+const N=STEPS.length;
 const SCS=[1,2,3,4,5,6,7,8,9].map(i=>document.getElementById('ds'+i));
 const dside=document.getElementById('dside');
 const dprog=document.getElementById('dprog');
@@ -41,11 +40,45 @@ const dhintt=document.getElementById('dhintt');
 const drebtn=document.getElementById('drebtn');
 const dauto=document.getElementById('dauto');
 const dautoTxt=document.getElementById('dauto-txt');
+const dcount=document.getElementById('dcount');
+const dtotal=document.getElementById('dtotal');
+const dphone=document.getElementById('dphone');
+const fcursor=document.getElementById('fcursor');
+const dctrls=document.getElementById('dctrls');
+const dprev=document.getElementById('dprev');
+const dnext=document.getElementById('dnext');
+const dplay=document.getElementById('dplay');
+const dplayI=document.getElementById('dplay-i');
+const dreset=document.getElementById('dreset');
+const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 let cur=0;
 let autoTimer=null;
+let cursorTimer=null;
 let manualMode=false;
-const AUTO_DELAY=4200;
-for(let i=0;i<N-1;i++){const s=document.createElement('div');s.className='ds-seg';dprog.appendChild(s);}
+let paused=false;
+let started=false;
+const AUTO_DELAY=4500;
+
+if(dtotal)dtotal.textContent=N;
+
+// Build progress segments (clickable)
+for(let i=0;i<N;i++){
+  const s=document.createElement('button');
+  s.className='ds-seg';
+  s.type='button';
+  s.setAttribute('aria-label','Ir para passo '+(i+1));
+  s.addEventListener('click',()=>{enterManual();goTo(i,true);});
+  dprog.appendChild(s);
+}
+
+function setAutoLabel(){
+  if(!dautoTxt)return;
+  if(manualMode)dautoTxt.textContent='controlo manual';
+  else if(paused)dautoTxt.textContent='em pausa';
+  else dautoTxt.textContent='a avançar automaticamente';
+  dauto.classList.toggle('is-manual',manualMode||paused);
+}
 
 function setSide(i){
   dside.classList.add('fading');
@@ -54,38 +87,117 @@ function setSide(i){
     dlbl.textContent=d.l; dh.textContent=d.h; dp.textContent=d.p;
     dhint.style.display=d.hint?'inline-flex':'none';
     if(d.hint)dhintt.textContent=d.hint;
-    drebtn.style.display=i===N-1?'block':'none';
+    const _drebtn=document.getElementById('drebtn');
+    const _dctrls=document.getElementById('dctrls');
+    const _dcount=document.getElementById('dcount');
+    const _dauto=document.getElementById('dauto');
+    if(_drebtn)_drebtn.style.display=i===N-1?'inline-flex':'none';
+    if(_dctrls)_dctrls.style.display=i===N-1?'none':'flex';
     const demoCta=document.getElementById('demo-cta-box');
     if(demoCta)demoCta.style.display=i===N-1?'block':'none';
-    dauto.style.display=i===N-1?'none':'flex';
+    if(_dauto)_dauto.style.display=i===N-1?'none':'inline-flex';
+    if(_dcount)_dcount.textContent=i+1;
     [...dprog.children].forEach((s,idx)=>{
       s.classList.remove('active');
       s.classList.toggle('done',idx<i);
-      if(idx===i&&!manualMode)s.classList.add('active');
+      if(idx===i&&!manualMode&&!paused&&i<N-1)s.classList.add('active');
     });
     dside.classList.remove('fading');
-  },200);
+  },180);
+}
+
+function moveCursor(i){
+  if(!fcursor||!dphone)return;
+  clearTimeout(cursorTimer);
+  const tgt=STEPS[i]&&STEPS[i].tgt?document.querySelector(STEPS[i].tgt):null;
+  if(!tgt||manualMode||prefersReduced||i===N-1){fcursor.classList.remove('on','tap');return;}
+  // wait for scene fade-in
+  cursorTimer=setTimeout(()=>{
+    const pr=dphone.getBoundingClientRect();
+    const bl=dphone.clientLeft||0, bt=dphone.clientTop||0;
+    const tr=tgt.getBoundingClientRect();
+    const x=tr.left-pr.left-bl+tr.width/2;
+    const y=tr.top-pr.top-bt+tr.height/2;
+    fcursor.style.transform=`translate(${x}px,${y}px)`;
+    fcursor.classList.add('on');
+    // tap after travel
+    cursorTimer=setTimeout(()=>{
+      fcursor.classList.add('tap');
+      setTimeout(()=>fcursor.classList.remove('tap'),420);
+    },1100);
+  },260);
 }
 
 function startAuto(){
   clearTimeout(autoTimer);
-  if(manualMode||cur>=N-1)return;
-  autoTimer=setTimeout(()=>{if(!manualMode&&cur<N-1)goTo(cur+1,false);},AUTO_DELAY);
+  if(manualMode||paused||cur>=N-1)return;
+  autoTimer=setTimeout(()=>{if(!manualMode&&!paused&&cur<N-1)goTo(cur+1,false);},AUTO_DELAY);
+}
+
+function enterManual(){
+  if(manualMode)return;
+  manualMode=true;
+  clearTimeout(autoTimer);
+  fcursor&&fcursor.classList.remove('on','tap');
+  setAutoLabel();
+  [...dprog.children].forEach(s=>s.classList.remove('active'));
 }
 
 function goTo(i,manual=true){
-  if(manual){manualMode=true;clearTimeout(autoTimer);dautoTxt.textContent='controlo manual';[...dprog.children].forEach(s=>s.classList.remove('active'));}
-  SCS[cur].classList.remove('on');cur=i;SCS[cur].classList.add('on');setSide(i);
+  if(manual)enterManual();
+  SCS[cur].classList.remove('on');cur=i;SCS[cur].classList.add('on');
+  setSide(i);
+  moveCursor(i);
   if(!manual)startAuto();
 }
 
 function toast(id,cb){const t=document.getElementById(id);if(t){t.classList.add('on');setTimeout(()=>{t.classList.remove('on');if(cb)cb();},900);}}
-function restart(){manualMode=false;dautoTxt.textContent='a avançar automaticamente';goTo(0,false);startAuto();}
+
+function restart(){
+  manualMode=false;paused=false;
+  setAutoLabel();
+  if(dplayI)dplayI.textContent='❚❚';
+  goTo(0,false);
+  startAuto();
+}
+
+function togglePause(){
+  if(manualMode){manualMode=false;setAutoLabel();if(cur<N-1){moveCursor(cur);startAuto();}return;}
+  paused=!paused;
+  if(dplayI)dplayI.textContent=paused?'▶':'❚❚';
+  setAutoLabel();
+  if(paused){clearTimeout(autoTimer);fcursor&&fcursor.classList.remove('on','tap');[...dprog.children].forEach(s=>s.classList.remove('active'));}
+  else {setSide(cur);moveCursor(cur);startAuto();}
+}
 
 // Auto-start when section enters viewport
-const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&cur===0&&!manualMode)startAuto();},{threshold:.3});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      if(!started&&cur===0){started=true;startAuto();moveCursor(0);}
+    } else {
+      clearTimeout(autoTimer);
+      fcursor&&fcursor.classList.remove('on','tap');
+    }
+  });
+},{threshold:.3});
 const demoEl=document.getElementById('demo');
 if(demoEl)obs.observe(demoEl);
+
+// pause when tab hidden
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){clearTimeout(autoTimer);}
+  else if(!manualMode&&!paused&&cur<N-1){startAuto();}
+});
+
+// reposition cursor on resize
+window.addEventListener('resize',()=>{if(!manualMode&&!paused)moveCursor(cur);});
+
+// controls
+if(dprev)dprev.addEventListener('click',()=>{enterManual();if(cur>0)goTo(cur-1,true);});
+if(dnext)dnext.addEventListener('click',()=>{enterManual();if(cur<N-1)goTo(cur+1,true);});
+if(dplay)dplay.addEventListener('click',togglePause);
+if(dreset)dreset.addEventListener('click',restart);
 
 // interactions
 document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1);});
@@ -103,8 +215,16 @@ document.getElementById('ds6').querySelector('.app-nav').addEventListener('click
 
 document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===6)goTo(7);});
 document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8);});
-document.getElementById('credo').addEventListener('click',        restart);
-drebtn.addEventListener('click',                                   restart);
+const credoEl=document.getElementById('credo');
+if(credoEl)credoEl.addEventListener('click',restart);
+drebtn.addEventListener('click',restart);
+
+// manual mode if user taps on the screen directly
+SCS.forEach(s=>{if(s)s.addEventListener('click',e=>{
+  if(e.target.closest('.tgt, .app-nav, .ds-restart, .ds-ctrl'))return;
+  // tap on empty area → pause cursor + enter manual
+  enterManual();
+});});
 
 // Gallery navigation
 function goSlide(n){
@@ -113,5 +233,18 @@ function goSlide(n){
   const track=document.getElementById('galleryTrack');
   if(track)track.style.transform=`translateX(-${n*100}%)`;
 }
+window.goSlide=goSlide;
+
+// Reveal on scroll
+const revealObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObs.unobserve(e.target);}});
+},{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.sec-head, .how-step, .stat-card, .logo-card, .gallery-slide, .proof-grid > *, .faq-list > *').forEach(el=>{el.classList.add('reveal');revealObs.observe(el);});
+
+// Topbar elevation on scroll
+const topEl=document.getElementById('top');
+const onScroll=()=>{if(topEl)topEl.classList.toggle('scrolled',window.scrollY>8);};
+window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 
 setSide(0);
+setAutoLabel();
