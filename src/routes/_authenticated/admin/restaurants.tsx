@@ -38,6 +38,7 @@ type Row = {
   featured: boolean;
   featured_order: number | null;
   is_new: boolean;
+  updated_at: string;
 };
 
 const MAX_FEATURED = 5;
