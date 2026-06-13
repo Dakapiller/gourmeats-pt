@@ -75,11 +75,20 @@
     <div class="demo-inner">
       <div class="demo-side" id="dside">
         <div class="ds-prog" id="dprog"></div>
-        <div class="ds-auto" id="dauto"><span class="ds-auto-dot"></span><span id="dauto-txt">a avançar automaticamente</span></div>
+        <div class="ds-meta">
+          <span class="ds-count"><span id="dcount">1</span><span class="ds-count-sep">/</span><span id="dtotal">9</span></span>
+          <span class="ds-auto" id="dauto"><span class="ds-auto-dot"></span><span id="dauto-txt">a avançar automaticamente</span></span>
+        </div>
         <div class="ds-lbl" id="dlbl">Largo São Domingos · Lisboa</div>
         <div class="ds-h"  id="dh">O cliente abre o menu em segundos.</div>
         <div class="ds-p"  id="dp">A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração manual.</div>
         <div class="tap-hint" id="dhint"><span class="tap">👆</span><span id="dhintt">Toque em "Comida"</span></div>
+        <div class="ds-ctrls" id="dctrls" role="group" aria-label="Controlos da demo">
+          <button class="ds-ctrl" id="dprev" aria-label="Passo anterior" title="Anterior">‹</button>
+          <button class="ds-ctrl ds-ctrl-play" id="dplay" aria-label="Pausa" title="Play/Pause"><span id="dplay-i">❚❚</span></button>
+          <button class="ds-ctrl" id="dnext" aria-label="Próximo passo" title="Próximo">›</button>
+          <button class="ds-ctrl ds-ctrl-restart" id="dreset" aria-label="Recomeçar" title="Recomeçar">↺</button>
+        </div>
         <button class="ds-restart" id="drebtn">↺ Recomeçar a demo</button>
         <div class="demo-cta-box" id="demo-cta-box" style="display:none">
           <p class="demo-cta-msg">Quer isto no seu restaurante?</p>
