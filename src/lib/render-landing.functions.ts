@@ -67,13 +67,14 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       )
       .join("");
 
-    const renderLogoCard = (r: { name: string; logo_url: string | null; link_url: string | null }) => {
+    const renderLogoCard = (r: { name: string; logo_url: string | null; link_url: string | null; is_new?: boolean }) => {
       const href = r.link_url ? ` href="${escapeHtml(r.link_url)}" target="_blank" rel="noopener"` : "";
       const tag = r.link_url ? "a" : "div";
       const img = r.logo_url
         ? `<img src="${escapeHtml(r.logo_url)}" alt="${escapeHtml(r.name)}">`
         : `<div class="logo-card-ph">${escapeHtml(r.name)}</div>`;
-      return `<${tag} class="logo-card"${href}>${img}<div class="logo-card-name">${escapeHtml(
+      const newBadge = r.is_new ? '<span class="logo-card-new">Novo</span>' : "";
+      return `<${tag} class="logo-card${r.is_new ? " is-new" : ""}"${href}>${newBadge}${img}<div class="logo-card-name">${escapeHtml(
         r.name,
       )}</div>${r.link_url ? '<div class="logo-card-cta">Ver carta →</div>' : ""}</${tag}>`;
     };
