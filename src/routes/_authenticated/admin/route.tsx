@@ -33,6 +33,8 @@ const NAV: { to: string; label: string; icon: typeof Settings; exact?: boolean }
   { to: "/admin/features", label: "Features", icon: LayoutGrid },
   { to: "/admin/faq", label: "FAQ", icon: HelpCircle },
   { to: "/admin/cta", label: "CTA final", icon: Megaphone },
+  { to: "/admin/users", label: "Utilizadores", icon: Users },
+
 ];
 
 function AdminLayout() {
