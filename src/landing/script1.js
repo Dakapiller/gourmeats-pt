@@ -112,8 +112,8 @@ function moveCursor(i){
     const pr=dphone.getBoundingClientRect();
     const bl=dphone.clientLeft||0, bt=dphone.clientTop||0;
     const tr=tgt.getBoundingClientRect();
-    const x=tr.left-pr.left+tr.width/2;
-    const y=tr.top-pr.top+tr.height/2;
+    const x=tr.left-pr.left-bl+tr.width/2;
+    const y=tr.top-pr.top-bt+tr.height/2;
     fcursor.style.transform=`translate(${x}px,${y}px)`;
     fcursor.classList.add('on');
     // tap after travel
