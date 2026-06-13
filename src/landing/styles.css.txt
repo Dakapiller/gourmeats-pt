@@ -433,7 +433,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .feat-phone{width:190px}
 
   /* Demo section */
-  #demo{padding:44px 0}
+  #demo{padding:32px 0}
   .demo-inner{gap:16px}
   .demo-side{max-width:100%;padding:0 4px}
   .ds-h{font-size:clamp(16px,4.5vw,20px)}
