@@ -14,16 +14,327 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cta_section: {
+        Row: {
+          headline: string
+          id: number
+          primary_cta_label: string
+          subheadline: string
+          updated_at: string
+        }
+        Insert: {
+          headline?: string
+          id?: number
+          primary_cta_label?: string
+          subheadline?: string
+          updated_at?: string
+        }
+        Update: {
+          headline?: string
+          id?: number
+          primary_cta_label?: string
+          subheadline?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      faq_items: {
+        Row: {
+          answer: string
+          id: string
+          question: string
+          sort_order: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          answer: string
+          id?: string
+          question: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          answer?: string
+          id?: string
+          question?: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      features: {
+        Row: {
+          description: string
+          icon: string | null
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          description: string
+          icon?: string | null
+          id?: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          description?: string
+          icon?: string | null
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      hero_section: {
+        Row: {
+          headline: string
+          id: number
+          kicker: string
+          primary_cta_label: string
+          secondary_cta_label: string
+          subheadline: string
+          updated_at: string
+        }
+        Insert: {
+          headline?: string
+          id?: number
+          kicker?: string
+          primary_cta_label?: string
+          secondary_cta_label?: string
+          subheadline?: string
+          updated_at?: string
+        }
+        Update: {
+          headline?: string
+          id?: number
+          kicker?: string
+          primary_cta_label?: string
+          secondary_cta_label?: string
+          subheadline?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      hero_stats: {
+        Row: {
+          id: string
+          label: string
+          sort_order: number
+          updated_at: string
+          value: string
+          visible: boolean
+        }
+        Insert: {
+          id?: string
+          label: string
+          sort_order?: number
+          updated_at?: string
+          value: string
+          visible?: boolean
+        }
+        Update: {
+          id?: string
+          label?: string
+          sort_order?: number
+          updated_at?: string
+          value?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      metrics: {
+        Row: {
+          description: string
+          id: string
+          sort_order: number
+          updated_at: string
+          value: string
+          visible: boolean
+        }
+        Insert: {
+          description: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+          value: string
+          visible?: boolean
+        }
+        Update: {
+          description?: string
+          id?: string
+          sort_order?: number
+          updated_at?: string
+          value?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      proof_cards: {
+        Row: {
+          author_name: string
+          author_role: string
+          id: string
+          quote: string
+          sort_order: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          author_name: string
+          author_role: string
+          id?: string
+          quote: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          author_name?: string
+          author_role?: string
+          id?: string
+          quote?: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      restaurants: {
+        Row: {
+          id: string
+          link_url: string | null
+          logo_url: string | null
+          name: string
+          sort_order: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          id?: string
+          link_url?: string | null
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          id?: string
+          link_url?: string | null
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          contact_email: string
+          cta_message: string
+          id: number
+          meta_description: string
+          meta_title: string
+          og_image_url: string | null
+          site_name: string
+          updated_at: string
+          whatsapp_display: string
+          whatsapp_number: string
+        }
+        Insert: {
+          contact_email?: string
+          cta_message?: string
+          id?: number
+          meta_description?: string
+          meta_title?: string
+          og_image_url?: string | null
+          site_name?: string
+          updated_at?: string
+          whatsapp_display?: string
+          whatsapp_number?: string
+        }
+        Update: {
+          contact_email?: string
+          cta_message?: string
+          id?: number
+          meta_description?: string
+          meta_title?: string
+          og_image_url?: string | null
+          site_name?: string
+          updated_at?: string
+          whatsapp_display?: string
+          whatsapp_number?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "editor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +461,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "editor"],
+    },
   },
 } as const
