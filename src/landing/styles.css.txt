@@ -52,9 +52,9 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 
 /* gallery de vistas */
 #screens{padding:80px 0 0;overflow:hidden}
-.gallery-wrap{margin-top:40px}
-.gallery-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1)}
-.gallery-slide{min-width:100%;display:flex;align-items:center;gap:56px;padding:0 calc((100vw - 1100px)/2);box-sizing:border-box}
+.gallery-wrap{margin-top:40px;display:grid;grid-template-columns:220px 1fr;gap:0;align-items:center;max-width:1280px;margin-left:auto;margin-right:auto;padding:0 24px 56px;box-sizing:border-box}
+.gallery-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);overflow:hidden;border-radius:18px}
+.gallery-slide{min-width:100%;display:flex;align-items:center;gap:48px;padding:8px 8px 8px 32px;box-sizing:border-box}
 .gallery-phone{flex-shrink:0;width:240px}
 .gallery-phone-inner{background:var(--app);border-radius:30px;border:6px solid #1a1a18;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.18);position:relative}
 .gallery-phone-inner img{width:100%;display:block}
@@ -66,10 +66,30 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 .gallery-pts{list-style:none;display:flex;flex-direction:column;gap:10px}
 .gallery-pts li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink2);line-height:1.5}
 .gallery-pts li::before{content:'';width:18px;height:18px;flex-shrink:0;background:var(--ys) url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 10l3.5 3.5L15 7' stroke='%230E8F84' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/12px;border-radius:50%;margin-top:2px}
-.gallery-nav{display:flex;gap:8px;padding:28px calc((100vw - 1100px)/2) 56px;flex-wrap:wrap}
-.gnav-btn{padding:9px 18px;border-radius:100px;border:1.5px solid var(--line);background:transparent;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:inherit}
-.gnav-btn:hover{border-color:var(--yd);color:var(--yd)}
-.gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* Side-rail tab nav next to the phone */
+.gallery-nav{display:flex;flex-direction:column;gap:6px;padding:16px 16px 16px 0;border-right:1px solid var(--line);position:relative}
+.gnav-btn{position:relative;display:flex;align-items:center;gap:12px;padding:14px 18px 14px 14px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--ink3);font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;text-align:left;transition:background-color .2s,color .2s,border-color .2s;width:100%}
+.gnav-btn .gnav-num{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ink3);background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:2px 6px;line-height:1;transition:all .2s}
+.gnav-btn .gnav-lbl{flex:1;min-width:0}
+.gnav-btn .gnav-bar{position:absolute;right:-1px;top:50%;transform:translateY(-50%) scaleY(.2);width:3px;height:60%;background:var(--brand);border-radius:3px;opacity:0;transition:opacity .25s,transform .25s}
+.gnav-btn:hover{color:var(--ink);background:var(--bg2)}
+.gnav-btn.active{color:var(--ink);background:var(--brand-soft,rgba(20,181,166,.08))}
+.gnav-btn.active .gnav-num{background:var(--brand);border-color:var(--brand);color:#fff}
+.gnav-btn.active .gnav-bar{opacity:1;transform:translateY(-50%) scaleY(1)}
+
+@media (max-width:900px){
+  .gallery-wrap{grid-template-columns:1fr;padding:0 16px 40px}
+  .gallery-nav{flex-direction:row;gap:8px;padding:0 0 16px;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .gallery-nav::-webkit-scrollbar{display:none}
+  .gnav-btn{flex:0 0 auto;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff}
+  .gnav-btn .gnav-bar{display:none}
+  .gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+  .gnav-btn.active .gnav-num{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+  .gallery-slide{flex-direction:column;align-items:flex-start;gap:28px;padding:8px 4px}
+  .gallery-info{max-width:none}
+}
+
 
 /* phone hero */
 .phone-wrap{position:relative;display:flex;justify-content:center}
