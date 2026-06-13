@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Gourmeats Portugal" },
+      { name: "description", content: "Pixel Perfect Clone creates a visually accurate, mobile-first digital menu for restaurants." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Gourmeats Portugal" },
+      { property: "og:description", content: "Pixel Perfect Clone creates a visually accurate, mobile-first digital menu for restaurants." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Gourmeats Portugal" },
+      { name: "twitter:description", content: "Pixel Perfect Clone creates a visually accurate, mobile-first digital menu for restaurants." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/9XKh5w0yymh0zKngMR9qs2rGSFA2/social-images/social-1781390330428-Logo-Gourmeats-Negro.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/9XKh5w0yymh0zKngMR9qs2rGSFA2/social-images/social-1781390330428-Logo-Gourmeats-Negro.webp" },
     ],
     links: [
       {
