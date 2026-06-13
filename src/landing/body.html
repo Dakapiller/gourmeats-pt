@@ -60,7 +60,9 @@
 <section id="logos">
   <div class="wrap">
     <p class="logos-lbl">Já a ser usado em restaurantes como</p>
-    <div class="logos-row">%%LOGOS_ROW%%</div>
+    <div class="logos-row" data-logos-featured>%%LOGOS_ROW%%</div>
+    <div class="logos-row logos-extra" data-logos-extra hidden>%%LOGOS_EXTRA%%</div>
+    <div class="logos-toggle-wrap">%%LOGOS_TOGGLE%%</div>
   </div>
 </section>
 
@@ -507,4 +509,15 @@ function goSlide(n){
 }
 
 setSide(0);
+
+// Logos: expand/collapse all restaurants
+document.querySelectorAll('[data-logos-toggle]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const extra=document.querySelector('[data-logos-extra]');
+    if(!extra)return;
+    const open=extra.hasAttribute('hidden')?true:false;
+    if(open){extra.removeAttribute('hidden');btn.setAttribute('aria-expanded','true');btn.classList.add('is-open');}
+    else{extra.setAttribute('hidden','');btn.setAttribute('aria-expanded','false');btn.classList.remove('is-open');}
+  });
+});
 </script>

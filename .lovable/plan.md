@@ -1,63 +1,46 @@
-# Plano: CTAs profissionais + nova paleta Gourmeats
+# Importar restaurantes ativos + destaques
 
-## 1. Correções de copy (todos os CTAs revistos)
+## 1. Schema (migração)
+Adicionar à tabela `restaurants`:
+- `featured boolean not null default false` — marca destaque na landing
+- `featured_order integer` — ordem entre destacados (nullable)
 
-| Onde | Atual | Novo |
-|---|---|---|
-| Topbar | "Falar connosco" | "Falar com a equipa" |
-| Hero | "Quero ter Gourmeats no meu restaurante" | "Pedir demonstração" |
-| Demo — fim (s-cta, dentro do telemóvel) | "Falar com o **Andre**" | "Falar com o **André**" |
-| Demo — fim (texto) | "Foi isto que viu. E a experiencia real dos seus clientes." | "Foi isto que viu — a experiência real dos seus clientes." |
-| Demo CTA box (fora) | "Quer isto no seu restaurante?" / "Falar connosco agora" | "Pronto para oferecer esta experiência?" / "Agendar demonstração" |
-| How-it-works | "Começar agora — falar com o André" | "Agendar demonstração com o André" |
-| Final | "Falar com o André no WhatsApp" | "Falar com o André via WhatsApp" |
-| Final email | "Prefere por e-mail? andre.duque@..." | "Prefere e-mail? andre.duque@..." |
-| Mensagens pré-preenchidas WhatsApp | "Olá André, vi a landing..." / "vi a demo e quero a Gourmeats..." | Uniformizar: "Olá André, vi a apresentação da Gourmeats e gostaria de agendar uma demonstração para o meu restaurante." |
-| FAB aria-label | "WhatsApp" | "Falar via WhatsApp" |
+Trigger ou validação no backoffice impede ter mais de 5 com `featured=true` (a constraint dura via partial unique index não dá; usamos validação UI + um trigger `BEFORE INSERT/UPDATE` que conta e rejeita acima de 5).
 
-Sem alterações de funcionalidade, apenas texto + `href` (mensagens WA).
+## 2. Seed dos 26 ativos
+Insert dos 26 restaurantes com `Status=Active` do ficheiro, mapeando:
+- `name` ← Name
+- `link_url` ← URL (NULL quando em falta)
+- `visible=true`, `sort_order` pela ordem cronológica de ativação
+- `logo_url=NULL` (a preencher depois no backoffice)
 
-## 2. Nova paleta (baseada no logo)
+Restaurante "Seixo by Vasco Coelho Santos" (Churn) é excluído.
 
-Substituir o amarelo (`--y #F5C800`, `--yd`, `--ys`, gradientes amber, halos warm) por:
+**Sem URL gourmeats (5):** Botequim Nostalgic, O Buraquinho, Bulha Bolhão, Kintsugi, Soul Bites.
 
-```text
---ink   : #1F1F1F   (grafite do "gourmeats" do logo)
---ink2  : #2E2E2E
---ink3  : #6B6B6B
---brand : #14B5A6   (teal do play-button do logo)
---brand-2: #0E8F84  (teal escuro — hover/gradient)
---brand-soft: #E6F7F5 (fundo suave, substitui --ys)
---brand-line: #BDE7E2 (border suave, substitui #F0D060)
---wa    : #25D366   (mantém — botões WhatsApp)
---wa-2  : #1FB755
-```
+## 3. Backoffice (`/admin/restaurants`)
+- Novo campo `featured` (switch) + `featured_order` (number).
+- **Aviso visível** em cada card sem `link_url`: badge "Sem URL Gourmeats — adicionar" (amber).
+- Banner no topo a contar quantos restaurantes faltam URL e quantos destaques estão definidos (`x/5`).
+- Bloquear ativar 6.º destaque (toast + revert).
 
-Aplicação:
-- `hero-kicker` ("DEMO ENERGY/CONCLUÍDA ✓"): fundo `--brand-soft`, texto `--brand-2`, border `--brand-line`. Sem gradiente amarelo.
-- `demo-cta-box`: mesmo tratamento — fundo `--brand-soft` levíssimo, border `--brand-line`.
-- Progress bar da demo (segmentos): ativos passam a `--brand`.
-- Botão play da demo (`.ds-ctrl-play`): fundo `--brand`, hover `--brand-2`, ícone branco.
-- `.ds-restart` ("Recomeçar a demo"): border `--brand`, sombra teal subtil.
-- `.tap-hint`: border e glow em teal.
-- `--grad-hero` / `--grad-warm` no hero: substituir por gradiente neutro (off-white → branco) com halo `radial-gradient(... rgba(20,181,166,.08), transparent)`. Sem amarelo de fundo.
-- `--grad-amber` (usado em hovers): substituir por `linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%)`.
-- `cta-wa` (telemóvel) e `btn-wa` continuam **verde WhatsApp** — é cor de marca da app + sinal universal, mantém-se.
-- FAB WhatsApp continua verde.
+## 4. Landing
+Na secção de logos:
+- Mostrar primeiro os `featured=true` (ordenados por `featured_order`, depois `sort_order`).
+- Os restantes ficam escondidos atrás de um botão **"Ver todos os restaurantes (21)"** que faz toggle (CSS `.logos-extra.is-open`) — sem nova rota, sem JS pesado.
+- Se 0 destacados, mostra tudo (fallback).
 
-## 3. Ficheiros a tocar
+`render-landing.functions.ts` passa a query a incluir `featured, featured_order` e divide em dois grupos no HTML gerado (`%%LOGOS_ROW%%` + novo `%%LOGOS_EXTRA%%` + botão).
 
-- `src/landing/body.html` — copy de todos os CTAs e `wa.me` query strings; "Andre" → "André"; texto da `s-cta`.
-- `src/landing/styles.css.txt` — variáveis `--y/--yd/--ys`, `--grad-warm`, `--grad-amber`, `hero-kicker`, `demo-cta-box`, `ds-ctrl-play`, `ds-restart`, `tap-hint`, `proof-card` hover, halo do hero, e qualquer `rgba(245,200,0,...)` → `rgba(20,181,166,...)`.
-- `src/landing/script1.js` — só se houver cores inline (verificar barra de progresso/cursor); sem alterações de lógica.
+## 5. Fora de scope
+- Logos das marcas (ficam a NULL, placeholder por nome — já existente).
+- Alterações ao resto da landing/CTA/copy.
 
-## 4. Fora do âmbito
-
-- Backoffice, schema, RLS, server functions, layout/estrutura, animações da demo.
-- Cor verde WhatsApp dos botões WA (mantém-se).
-
-## Notas técnicas
-
-- Manter contraste AA: teal `#14B5A6` sobre branco passa para texto bold ≥14px; em corpo de texto pequeno usar `--brand-2 #0E8F84`.
-- Todos os `box-shadow` com tinta amarela passam a teal com a mesma opacidade.
-- Sem novas dependências; é trabalho puramente de tokens + copy.
+## Ficheiros a tocar
+- Migração SQL (nova) — colunas + trigger.
+- Seed via insert tool — 26 linhas.
+- `src/routes/_authenticated/admin/restaurants.tsx` — campos + avisos.
+- `src/components/admin/SectionAdmin.tsx` — só se preciso para suportar `boolean`/`number` (verificar).
+- `src/lib/render-landing.functions.ts` — query + split + token.
+- `src/landing/body.html` — novo bloco `%%LOGOS_EXTRA%%` + botão toggle.
+- `src/landing/styles.css.txt` — estilos do toggle/extra.

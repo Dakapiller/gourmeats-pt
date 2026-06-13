@@ -232,6 +232,8 @@ export type Database = {
       }
       restaurants: {
         Row: {
+          featured: boolean
+          featured_order: number | null
           id: string
           link_url: string | null
           logo_url: string | null
@@ -241,6 +243,8 @@ export type Database = {
           visible: boolean
         }
         Insert: {
+          featured?: boolean
+          featured_order?: number | null
           id?: string
           link_url?: string | null
           logo_url?: string | null
@@ -250,6 +254,8 @@ export type Database = {
           visible?: boolean
         }
         Update: {
+          featured?: boolean
+          featured_order?: number | null
           id?: string
           link_url?: string | null
           logo_url?: string | null
