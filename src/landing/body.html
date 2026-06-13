@@ -503,7 +503,7 @@ drebtn.addEventListener('click',                                   restart);
 // Gallery navigation
 function goSlide(n){
   document.querySelectorAll('.gallery-slide').forEach((s,i)=>s.classList.toggle('active',i===n));
-  document.querySelectorAll('.gnav-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+  document.querySelectorAll('.gnav-btn').forEach((b,i)=>{b.classList.toggle('active',i===n);b.setAttribute('aria-selected',i===n?'true':'false');});
   const track=document.getElementById('galleryTrack');
   if(track)track.style.transform=`translateX(-${n*100}%)`;
 }
