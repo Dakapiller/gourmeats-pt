@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/admin/restaurants")({
       description="Lista de restaurantes que aparecem na secção de logos."
       fields={[
         { name: "name", label: "Nome do restaurante", required: true },
-        { name: "logo_url", label: "URL do logo (quadrado)", type: "url" },
+        { name: "logo_url", label: "Logo do restaurante", type: "image", bucket: "restaurant-logos" },
         { name: "link_url", label: "URL do site / Instagram", type: "url" },
       ]}
       renderPreview={(r) => (
