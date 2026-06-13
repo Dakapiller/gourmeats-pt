@@ -309,6 +309,10 @@ function RestaurantsAdmin() {
                   <Switch id="featured" checked={editing.featured} onCheckedChange={(v) => setEditing({ ...editing, featured: v })} />
                   <Label htmlFor="featured">Destaque</Label>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Switch id="is_new" checked={editing.is_new} onCheckedChange={(v) => setEditing({ ...editing, is_new: v })} />
+                  <Label htmlFor="is_new">Etiqueta "Novo"</Label>
+                </div>
                 {editing.featured && (
                   <div className="flex items-center gap-2">
                     <Label htmlFor="forder">Ordem destaque</Label>
