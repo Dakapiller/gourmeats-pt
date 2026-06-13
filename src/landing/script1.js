@@ -110,6 +110,7 @@ function moveCursor(i){
   // wait for scene fade-in
   cursorTimer=setTimeout(()=>{
     const pr=dphone.getBoundingClientRect();
+    const bl=dphone.clientLeft||0, bt=dphone.clientTop||0;
     const tr=tgt.getBoundingClientRect();
     const x=tr.left-pr.left+tr.width/2;
     const y=tr.top-pr.top+tr.height/2;
