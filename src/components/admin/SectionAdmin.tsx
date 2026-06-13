@@ -50,8 +50,15 @@ function ImageField({
       setUploading(false);
       return;
     }
-    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-    onChange(data.publicUrl);
+    const { data: signed, error: signErr } = await supabase.storage
+      .from(bucket)
+      .createSignedUrl(path, 60 * 60 * 24 * 365 * 10); // 10 years
+    if (signErr || !signed) {
+      toast.error(signErr?.message ?? "Não foi possível gerar URL");
+      setUploading(false);
+      return;
+    }
+    onChange(signed.signedUrl);
     setUploading(false);
   };
   return (
