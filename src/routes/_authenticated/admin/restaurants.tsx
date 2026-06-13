@@ -14,7 +14,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon } from "lucide-react";
+import { Pencil, Trash2, Plus, ArrowUp, ArrowDown, Star, AlertTriangle, Link as LinkIcon, Sparkles } from "lucide-react";
 
 type Row = {
   id: string;
@@ -25,6 +25,7 @@ type Row = {
   visible: boolean;
   featured: boolean;
   featured_order: number | null;
+  is_new: boolean;
 };
 
 const MAX_FEATURED = 5;
@@ -93,6 +94,7 @@ function RestaurantsAdmin() {
       visible: true,
       featured: false,
       featured_order: null,
+      is_new: false,
     });
     setOpen(true);
   };
@@ -112,6 +114,7 @@ function RestaurantsAdmin() {
       visible: editing.visible,
       featured: editing.featured,
       featured_order: editing.featured ? (editing.featured_order ?? featuredCount + 1) : null,
+      is_new: editing.is_new,
     };
     const { error } = editing.id
       ? await supabase.from("restaurants").update(payload).eq("id", editing.id)
@@ -218,6 +221,11 @@ function RestaurantsAdmin() {
                         <Star className="h-3 w-3 fill-amber-500 text-amber-500" /> Destaque
                       </span>
                     )}
+                    {r.is_new && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-teal-100 text-teal-800 px-1.5 py-0.5 rounded">
+                        <Sparkles className="h-3 w-3" /> Novo
+                      </span>
+                    )}
                     {!r.link_url && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-semibold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
                         <AlertTriangle className="h-3 w-3" /> Sem URL Gourmeats
@@ -239,6 +247,17 @@ function RestaurantsAdmin() {
                   title={r.featured ? "Remover destaque" : "Marcar destaque"}
                 >
                   <Star className={`h-4 w-4 ${r.featured ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}`} />
+                </button>
+                <button
+                  onClick={async () => {
+                    const { error } = await supabase.from("restaurants").update({ is_new: !r.is_new }).eq("id", r.id);
+                    if (error) toast.error(error.message); else load();
+                  }}
+                  className="p-2 rounded hover:bg-muted"
+                  aria-label={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
+                  title={r.is_new ? "Remover etiqueta Novo" : "Marcar como Novo"}
+                >
+                  <Sparkles className={`h-4 w-4 ${r.is_new ? "text-teal-600" : "text-muted-foreground"}`} />
                 </button>
                 <Switch checked={r.visible} onCheckedChange={() => toggleVisible(r)} />
                 <Button size="icon" variant="ghost" onClick={() => { setEditing({ ...r }); setOpen(true); }}>
@@ -289,6 +308,10 @@ function RestaurantsAdmin() {
                 <div className="flex items-center gap-2">
                   <Switch id="featured" checked={editing.featured} onCheckedChange={(v) => setEditing({ ...editing, featured: v })} />
                   <Label htmlFor="featured">Destaque</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch id="is_new" checked={editing.is_new} onCheckedChange={(v) => setEditing({ ...editing, is_new: v })} />
+                  <Label htmlFor="is_new">Etiqueta "Novo"</Label>
                 </div>
                 {editing.featured && (
                   <div className="flex items-center gap-2">

@@ -1,0 +1,1 @@
+ALTER TABLE public.restaurants ADD COLUMN IF NOT EXISTS is_new boolean NOT NULL DEFAULT false;
