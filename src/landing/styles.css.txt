@@ -411,12 +411,12 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .fc:last-of-type{bottom:18%!important;left:-5%!important;width:130px!important}
 
   /* Sections */
-  .feat{padding:52px 0}
-  #how{padding:52px 0}
-  #proof{padding:52px 0}
-  #faq{padding:52px 0}
-  #final{padding:52px 0 40px}
-  #logos{padding:28px 0}
+  .feat{padding:36px 0}
+  #how{padding:36px 0}
+  #proof{padding:36px 0}
+  #faq{padding:36px 0}
+  #final{padding:40px 0 28px}
+  #logos{padding:20px 0}
   .logos-lbl{font-size:11px;margin-bottom:14px}
 
   /* Section headings */
