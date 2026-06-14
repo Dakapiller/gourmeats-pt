@@ -96,8 +96,8 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 /* phone hero */
 .phone-wrap{position:relative;width:fit-content;margin:0 auto}
 .fc-mob-row{display:contents}
-.fc-reservas{right:calc(100% + 16px);left:auto}
-.fc-reviews{left:calc(100% + 16px);right:auto}
+.fc-reservas{right:calc(100% + 16px);left:auto;top:32px}
+.fc-reviews{left:calc(100% + 16px);right:auto;top:32px}
 .fc-reservas::after,.fc-reviews::after{content:"";position:absolute;top:14px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent}
 .fc-reservas::after{right:-6px;border-left:7px solid #fff;filter:drop-shadow(1px 0 0 rgba(0,0,0,.06))}
 .fc-reviews::after{left:-6px;border-right:7px solid #fff;filter:drop-shadow(-1px 0 0 rgba(0,0,0,.06))}
