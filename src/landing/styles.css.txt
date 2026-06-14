@@ -427,8 +427,8 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .hero-in > div:first-child{order:1}
   .hero-feats{order:2}
   .hero-stats{display:none!important}
-  .fc,.fc-mesa,.fc-lang,.fc-reviews,.fc-reservas,.fc-mob-row,
-  [class*="callout"],[class*="badge-card"]{display:none!important}
+  .fc,.fc-mesa,.fc-lang,[class*="callout"],[class*="badge-card"]{display:none!important}
+  .fc-reviews,.fc-reservas{display:none!important}
   .hero-feats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:4px}
   .hero-feats li{display:inline-flex;align-items:center;gap:6px;background:#f1efe9;color:#3f3a33;border-radius:20px;padding:4px 10px;font-size:12px;line-height:1.3}
   .hero-feats li span{font-size:13px}
