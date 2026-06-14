@@ -411,8 +411,10 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .fc-val{font-size:12px}
   .fc-sub{font-size:9px}
   /* Reposition float cards for mobile */
-  .fc:first-of-type{top:8%!important;right:-5%!important;width:140px!important}
-  .fc:last-of-type{bottom:18%!important;left:-5%!important;width:130px!important}
+  .fc-mesa{top:30%!important;right:-5%!important;width:140px!important}
+  .fc-lang{bottom:18%!important;left:-5%!important;width:130px!important}
+  .fc-reviews{top:2%!important;right:-4%!important;width:138px!important}
+  .fc-reservas{top:6%!important;left:-4%!important;width:128px!important}
 
   /* Sections */
   .feat{padding:36px 0}
@@ -504,7 +506,8 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .hero-stats{gap:8px}
   .stat-card{padding:10px 12px}
   .stat-n{font-size:18px}
-  .fc:first-of-type{display:none}
+  .fc-mesa{display:none}
+  .fc-reviews{display:none}
 }
 
 /* Prevent horizontal scroll globally */
