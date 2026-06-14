@@ -94,7 +94,13 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 
 
 /* phone hero */
-.phone-wrap{position:relative;display:flex;justify-content:center}
+.phone-wrap{position:relative;width:fit-content;margin:0 auto}
+.fc-mob-row{display:contents}
+.fc-reservas{right:calc(100% + 16px);left:auto}
+.fc-reviews{left:calc(100% + 16px);right:auto}
+.fc-reservas::after,.fc-reviews::after{content:"";position:absolute;top:14px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.fc-reservas::after{right:-6px;border-left:7px solid #fff;filter:drop-shadow(1px 0 0 rgba(0,0,0,.06))}
+.fc-reviews::after{left:-6px;border-right:7px solid #fff;filter:drop-shadow(-1px 0 0 rgba(0,0,0,.06))}
 .phone-dev{width:260px;background:var(--app);border-radius:34px;border:6px solid #1a1a18;overflow:hidden;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.22),0 8px 24px rgba(0,0,0,.12)}
 .phone-dev img{width:100%;display:block}
 .pnotch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:76px;height:22px;background:#1a1a18;border-radius:0 0 12px 12px;z-index:10}
