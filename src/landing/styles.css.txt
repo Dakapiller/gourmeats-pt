@@ -420,8 +420,9 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   /* Reposition float cards for mobile */
   .fc-mesa{top:30%!important;right:-5%!important;width:140px!important}
   .fc-lang{bottom:18%!important;left:-5%!important;width:130px!important}
-  .fc-reviews{top:2%!important;right:-4%!important;width:138px!important}
-  .fc-reservas{top:6%!important;left:-4%!important;width:128px!important}
+  .fc-mob-row{display:flex!important;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+  .fc-reservas,.fc-reviews{position:static!important;width:auto!important;max-width:48%;top:auto!important;left:auto!important;right:auto!important;padding:8px 10px}
+  .fc-reservas::after,.fc-reviews::after{display:none}
 
   /* Sections */
   .feat{padding:36px 0}
