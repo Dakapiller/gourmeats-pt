@@ -1,31 +1,36 @@
-## Fix 3 hero issues
+## Mobile callouts beside the phone
 
-### 1. Callout cards — text overflow
-File: `src/landing/styles.css.txt`, line 100 (`.fc`)
+Edits limited to `src/landing/body.html` and `src/landing/styles.css.txt`. No other sections touched.
 
-Replace the `white-space:nowrap` rule (which is what causes the overflow) and add containment:
-```css
-.fc{position:absolute;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.06);padding:12px 14px;font-size:12px;line-height:1.4;max-width:160px;word-wrap:break-word;overflow-wrap:break-word;overflow:hidden;box-sizing:border-box}
-```
-No changes to the per-callout positioning classes — their explicit widths already fit within 160px.
+### 1. Star instead of green dot on Google Reviews
+`src/landing/body.html` line 42 — inside `.fc-reviews .fc-lbl`, swap `<span class="dot" style="background:#22c55e"></span>` for `<span class="fc-star" aria-hidden="true">★</span>` and recolor the label from green (`#16a34a`) to a neutral dark (`#1a1a18`) so the star carries the meaning. Reservas keeps its green dot.
 
-### 2. Navbar logo — use correct Gourmeats logo
-The repo has no existing Gourmeats logo asset (only `favicon.ico`). The user attached `Logo-Gourmeats-Negro.png` in this turn. Upload it via `lovable-assets` (from `/mnt/user-uploads/`) to create `src/assets/logo-gourmeats.png.asset.json`, then in `src/landing/body.html` line 4 replace:
-```html
-<div class="logo">gour<span>meats</span></div>
-```
-with an `<img>` referencing the asset URL (baked into the template at build via a tiny inline literal — since `body.html` is a `?raw` import, embed the CDN URL directly). Add a CSS rule so `.logo img` sizes correctly (height ~22px, mobile ~18px).
+Add a tiny `.fc-star` rule in `styles.css.txt` (size ~11px, color `#f5a623`, margin-right 4px, vertical-align baseline) so it matches the dot's footprint.
 
-### 3. Remove the kicker pill
-In `src/landing/body.html` line 17, delete:
-```html
-<div class="hero-kicker">%%HERO_KICKER%%</div>
-```
-Leaves the DB field untouched (admin-editable) but removes it from the hero. No CSS deletion needed — `.hero-kicker` rules just become unused.
+### 2. Re-float the callouts on mobile, next to the phone (not stacked below)
+
+In the `@media(max-width:768px)` block in `styles.css.txt` (currently lines 422–439):
+
+- Remove the lines that hide `.fc-reviews,.fc-reservas` and the `.fc,.fc-mesa,.fc-lang,[class*="callout"]...` selector (keep them visible on mobile).
+- Remove the entire `.fc-mob-row` mobile pill ruleset (lines 435–438) and the `.fc-mob-row{display:contents}` desktop line (line 98) — wrapper goes back to passive container.
+- Hide `.hero-feats` on mobile (`display:none`) since the cards return.
+- Override desktop positioning so the two cards sit immediately to each side of the 210px phone, aligned with its top browser bar:
+  - `.phone-wrap{position:relative}` (already set)
+  - `.fc-reservas{position:absolute;top:38px;right:auto;left:-6px;width:96px;max-width:96px;padding:6px 8px;font-size:10px;transform:translateX(-100%)}`
+  - `.fc-reviews{position:absolute;top:38px;left:auto;right:-6px;width:96px;max-width:96px;padding:6px 8px;font-size:10px;transform:translateX(100%)}`
+  - Inline `width:168px`/`width:152px` from the HTML is overridden by the mobile rule.
+  - Shrink inner type: `.fc-lbl{font-size:9px;margin-bottom:2px}`, `.fc-sub{font-size:9.5px;line-height:1.3}`.
+  - Arrows: keep the existing `::after` pointers (already point inward toward the phone) but reduce border size to 5px so they fit the smaller card.
+- Text containment: keep `word-wrap:break-word;overflow-wrap:break-word;overflow:hidden` (already on `.fc`). With 96px width and 9–10px type, the labels `Google Reviews` / `Reservas` and short subs stay on 1–2 lines without clipping.
+
+### 3. Mobile layout order
+
+Keep `.hero-in{flex-direction:column;gap:24px}` and `.phone-wrap{order:-1}` so the phone still renders first on mobile. `.hero-stats{display:none}` stays. The callouts come along with the phone since they're its children, so they reposition automatically.
+
+### Risk / fallback for very narrow screens (<360px)
+
+96px cards with `translateX(±100%)` need ~96px of free space on each side of the 210px phone. On a 360px viewport that's `(360−210)/2 = 75px` per side — 21px short. Add a `@media(max-width:380px)` tweak: shrink phone to `width:190px` and cards to `width:84px`, so it fits without horizontal scroll.
 
 ### Files changed
-- `src/landing/styles.css.txt` (callout rule + `.logo img` sizing)
-- `src/landing/body.html` (logo markup, remove kicker line)
-- `src/assets/logo-gourmeats.png.asset.json` (new, via lovable-assets CLI)
-
-No other sections touched.
+- `src/landing/body.html` (Google Reviews dot → ⭐, label color)
+- `src/landing/styles.css.txt` (mobile callout repositioning, hide `.hero-feats` on mobile, `.fc-star`, narrow-screen tweak)
