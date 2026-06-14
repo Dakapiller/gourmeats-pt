@@ -515,7 +515,6 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .stat-card{padding:10px 12px}
   .stat-n{font-size:18px}
   .fc-mesa{display:none}
-  .fc-reviews{display:none}
 }
 
 /* Prevent horizontal scroll globally */
