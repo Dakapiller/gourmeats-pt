@@ -1,24 +1,31 @@
-## Goal
-Add 2 new floating annotation callouts to the hero phone mockup, matching the existing visual style.
+## Fix 3 hero issues
 
-## Changes
+### 1. Callout cards — text overflow
+File: `src/landing/styles.css.txt`, line 100 (`.fc`)
 
-### 1. HTML (`src/landing/body.html`)
-Inside `.phone-wrap`, add 2 new `.fc` elements:
+Replace the `white-space:nowrap` rule (which is what causes the overflow) and add containment:
+```css
+.fc{position:absolute;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.06);padding:12px 14px;font-size:12px;line-height:1.4;max-width:160px;word-wrap:break-word;overflow-wrap:break-word;overflow:hidden;box-sizing:border-box}
+```
+No changes to the per-callout positioning classes — their explicit widths already fit within 160px.
 
-- **Callout 1 — Google Reviews**
-  - Position: `top:2%; right:-12%; width: 168px`
-  - Content: green dot, label "GOOGLE REVIEWS", subtext "link direto para as suas reviews"
+### 2. Navbar logo — use correct Gourmeats logo
+The repo has no existing Gourmeats logo asset (only `favicon.ico`). The user attached `Logo-Gourmeats-Negro.png` in this turn. Upload it via `lovable-assets` (from `/mnt/user-uploads/`) to create `src/assets/logo-gourmeats.png.asset.json`, then in `src/landing/body.html` line 4 replace:
+```html
+<div class="logo">gour<span>meats</span></div>
+```
+with an `<img>` referencing the asset URL (baked into the template at build via a tiny inline literal — since `body.html` is a `?raw` import, embed the CDN URL directly). Add a CSS rule so `.logo img` sizes correctly (height ~22px, mobile ~18px).
 
-- **Callout 2 — Reservas**
-  - Position: `top:6%; left:-18%; width: 152px`
-  - Content: green dot, label "RESERVAS", subtext "link direto para reservar mesa"
+### 3. Remove the kicker pill
+In `src/landing/body.html` line 17, delete:
+```html
+<div class="hero-kicker">%%HERO_KICKER%%</div>
+```
+Leaves the DB field untouched (admin-editable) but removes it from the hero. No CSS deletion needed — `.hero-kicker` rules just become unused.
 
-All 4 callouts (existing + new) will get unique classes (`.fc-mesa`, `.fc-lang`, `.fc-reviews`, `.fc-reservas`) so CSS sibling selectors don't break.
+### Files changed
+- `src/landing/styles.css.txt` (callout rule + `.logo img` sizing)
+- `src/landing/body.html` (logo markup, remove kicker line)
+- `src/assets/logo-gourmeats.png.asset.json` (new, via lovable-assets CLI)
 
-### 2. CSS (`src/landing/styles.css.txt`)
-- Replace `.fc:first-of-type` / `.fc:last-of-type` selectors with class-based ones (`.fc-mesa`, `.fc-lang`) so the existing mobile repositioning continues to target the correct original callouts.
-- Add mobile repositioning rules for `.fc-reviews` and `.fc-reservas` to keep them within viewport bounds on narrow screens.
-- On extra-small screens (`max-width:380px`), hide the most peripheral callouts to prevent overflow.
-
-No other page changes. No copy edits.
+No other sections touched.
