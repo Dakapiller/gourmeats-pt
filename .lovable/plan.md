@@ -1,54 +1,40 @@
-# Plan
 
-## 1. Landing — optimize section heights (mobile-first)
+# Landing — 4 focused fixes
 
-Goal: less vertical scrolling on mobile while keeping desktop spacing readable.
+All changes are CSS/HTML only in `src/landing/body.html` and `src/landing/styles.css.txt`. No copy changes, no new sections, no DB.
 
-In `src/landing/styles.css.txt`:
-- Reduce vertical padding of major sections (`section`, `.hero`, `.gallery-wrap`, `.logos`, `.faq`, `.cta`, `.metrics`, etc.) under the `max-width: 900px` and `max-width: 640px` media queries: ~30–40% tighter top/bottom padding.
-- Reduce mobile heading/line-height (`h1`, `h2`, `.gallery-h`, `.hero-h`) and gaps between blocks (`gap`, `margin-bottom`) on mobile only.
-- Shrink the gallery phone height on mobile (currently 200px width → tighter aspect), and reduce `.gallery-pts` gap to 6–8px on small screens.
-- Cap hero illustration / proof / metrics min-heights on mobile so they don't stretch.
+## 1. Hero — remove green fade, simplify
+- Remove the green radial/linear gradient and any glow layers from `.hero` (background → plain page background).
+- Remove decorative blobs/blur/SVG noise inside `.hero` (any `::before`/`::after` overlays).
+- Keep: kicker, H1, sub, primary CTA, hero stats. Drop secondary visual ornaments (extra pill chips, decorative arrows, gradient text on the headline if present — headline becomes solid foreground color).
+- Tighten hero vertical padding slightly so the clean version doesn't feel empty.
 
-Desktop visuals stay essentially unchanged.
+## 2. Demo section — fits in one mobile screen
+Target: section height ≤ 100vh on screens ≤ 640px, with the phone mockup as the clear focus.
+- Reduce top/bottom padding of the demo section on mobile.
+- Shrink the "DEMO INTERATIVA" kicker + H2 line-height and margin-bottom on mobile.
+- Hide the explanatory paragraph under the H2 on mobile (`display:none` ≤ 640px), keep on desktop.
+- Collapse the dashed progress segments into a thin single bar on mobile (smaller height, no per-step labels).
+- Reduce gap between control buttons and "Recomeçar a demo".
+- Cap the phone mockup height with `max-height: calc(100vh - 320px)` on mobile so the whole block fits.
+- "Pronto para oferecer esta experiência?" CTA card: keep, but reduce its padding on mobile.
 
-## 2. Gallery bug fix ("3 vistas")
+## 3. Gallery nav — 3 tabs visible at once on mobile
+In `.gallery-nav` / `.gnav-btn` mobile rules (≤ 640px):
+- `.gallery-nav { display:flex; flex-direction:row; gap:4px; overflow:visible; }` (drop scroll).
+- `.gnav-btn { padding:6px 10px; font-size:11px; flex:1 1 0; min-width:0; }`
+- Hide the numeric badge (`.gnav-num`) on mobile to save room; keep the label only.
+- Label `.gnav-lbl` truncates with ellipsis if needed but at 11px all 3 fit at 375px.
+- Keep desktop side-rail layout untouched.
 
-Current bug: `goSlide(n)` translates `.gallery-track` by `-n*100%`, but `.gallery-track` lives inside a CSS grid column of unconstrained width, so the translate offset drifts and shows a blank/broken state when picking slide 2 or 3.
+## 4. Implementação — connector line + bolder badges
+- Add a thin connector line between the 4 numbered steps:
+  - Desktop: horizontal line behind the row of badges (`::before` on the steps container, `height:2px`, sits at badge vertical center, color `color-mix(in oklab, var(--teal) 25%, transparent)`).
+  - Mobile: vertical line down the center of the badge column (`::before` `width:2px`, full height between first and last badge).
+- Make number badges bolder/prominent: larger size (44px desktop / 40px mobile), solid teal background, white number, slight shadow, `font-weight:800`.
+- Remove any extra decorative chips/icons around the steps; keep number + short title + 1-line description.
+- Tighten vertical gap on mobile so the 4 steps feel like a fast sequence, not a long list.
 
-Fix in `src/landing/body.html` + `styles.css.txt`:
-- Switch slide visibility from translate-based carousel to show/hide pattern: only `.gallery-slide.active` is rendered (`display:flex`), others `display:none`.
-- Remove the `translateX` line from `goSlide()` and drop `overflow:hidden`/`min-width:100%` from `.gallery-track` (becomes a simple container).
-- Keep nav tab toggling exactly as today — tabs remain clickable because slides no longer overflow their parent.
-
-Result: clicking any of the 3 tabs swaps the slide cleanly; no horizontal drift.
-
-## 3. Backoffice — Restaurants page workable
-
-In `src/routes/_authenticated/admin/restaurants.tsx`:
-
-**Layout / scroll**
-- Wrap the page in a fixed-height shell: sticky top bar (title + search + filters + "Novo" button) and a scrollable list area (`max-h-[calc(100vh-220px)] overflow-y-auto`) instead of the whole page scrolling.
-- Make each row more compact (smaller logo thumb, single line of meta) to fit more on screen.
-
-**Search**
-- Add a search input in the sticky top bar (icon inside the field). Client-side filter by `name` (case/diacritics insensitive).
-
-**Filters** (chip toggles next to search)
-- "Em destaque" (only featured)
-- "Novos" (only `is_new`)
-- "Sem URL" (only missing `link_url`)
-- "Ocultos" (only `visible = false`)
-
-**Sort**
-- Dropdown "Ordenar por": `A–Z` (default), `Z–A`, `Mais recentes`, `Ordem manual`.
-- Default ordering rule: featured first (by `featured_order`), then `is_new` items, then the rest A–Z. The manual reorder arrows stay available only when sort = "Ordem manual".
-
-**Counters**
-- Small header line: `X restaurantes · Y em destaque · Z sem URL`.
-
-No DB schema changes required — all filtering/sorting happens client-side over the existing `restaurants` query.
-
-## Technical notes
-- Pure frontend changes. No migrations, no server functions touched.
-- Files: `src/landing/body.html`, `src/landing/styles.css.txt`, `src/routes/_authenticated/admin/restaurants.tsx`.
+## Files touched
+- `src/landing/body.html` — remove hero decorative blobs, simplify demo progress markup, swap gallery-nav structure if needed for badge hide.
+- `src/landing/styles.css.txt` — all visual rules above (hero background, demo mobile sizing, gallery-nav mobile, steps connector + badges).

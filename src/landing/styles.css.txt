@@ -702,3 +702,91 @@ summary:hover{background:var(--ys)}
 .logo-card-new{position:absolute;top:-8px;right:-8px;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--brand,#14B5A6),var(--brand-2,#0E8F84));padding:3px 8px;border-radius:999px;box-shadow:0 2px 8px rgba(20,181,166,.35);animation:newPulse 2.4s ease-in-out infinite}
 @keyframes newPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .logo-card.is-new{border-color:var(--brand-line,#BDE7E2)}
+
+/* ============================================================
+   FOCUSED REFINEMENTS — append-only overrides (loaded last)
+   1) Hero: remove green fade
+   2) Demo: fit one mobile screen
+   3) Gallery nav: 3 tabs visible on mobile
+   4) How: connector line + bolder badges
+   ============================================================ */
+
+/* 1) HERO — strip decorative gradients & glow */
+#hero::before{display:none!important;background:none!important}
+.phone-wrap::after{display:none!important;background:none!important}
+#hero{background:var(--bg)}
+.hero-kicker{background:#fff;border:1px solid var(--brand-line);box-shadow:none}
+
+/* 2) DEMO — compact on mobile, phone is the focus */
+@media(max-width:640px){
+  #demo{padding:24px 0 28px}
+  #demo .sec-head{margin-bottom:14px}
+  #demo .sec-kicker{font-size:10.5px;margin-bottom:6px}
+  #demo h2{font-size:22px;line-height:1.2;margin-bottom:6px}
+  #demo .sec-sub{display:none}
+  .demo-inner{gap:14px}
+  .demo-side{padding:0 6px;max-width:100%}
+  .ds-prog{max-width:200px;height:auto;gap:3px;margin:0 auto 10px}
+  .ds-seg{height:3px}
+  .ds-meta{margin:4px 0 8px;font-size:10px}
+  .ds-lbl{font-size:9.5px;margin-bottom:4px}
+  .ds-h{font-size:16px;line-height:1.25;margin-bottom:4px}
+  .ds-p{display:none}
+  .tap-hint{margin-top:8px;padding:6px 12px;font-size:11.5px}
+  .ds-ctrls{margin-top:10px;gap:8px}
+  .ds-ctrl{width:34px;height:34px;font-size:14px}
+  .ds-ctrl-play{width:40px;height:40px}
+  .ds-restart{margin-top:10px;padding:8px 14px;font-size:12px}
+  .demo-cta-box{margin-top:10px;padding:12px 14px}
+  .demo-cta-msg{font-size:13px;margin-bottom:8px}
+  .demo-phone{width:230px;height:470px}
+}
+@media(max-width:380px){
+  .demo-phone{width:210px;height:430px}
+  #demo h2{font-size:20px}
+}
+
+/* 3) GALLERY NAV — all 3 visible at once on mobile */
+@media(max-width:640px){
+  .gallery-nav{display:flex!important;flex-direction:row!important;gap:4px!important;overflow:visible!important;padding:0 0 12px!important;border-bottom:1px solid var(--line);border-right:none;margin-bottom:12px}
+  .gallery-nav::-webkit-scrollbar{display:none}
+  .gnav-btn{flex:1 1 0!important;min-width:0!important;padding:6px 10px!important;font-size:11px!important;border-radius:999px;border:1px solid var(--line);background:#fff;gap:0;justify-content:center;text-align:center}
+  .gnav-btn .gnav-num{display:none}
+  .gnav-btn .gnav-lbl{flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+  .gnav-btn .gnav-bar{display:none}
+  .gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+}
+
+/* 4) HOW — connector line + bolder numbered badges */
+.how-grid{position:relative}
+/* Desktop / tablet: horizontal connector behind badges */
+@media(min-width:601px){
+  .how-grid::before{
+    content:"";position:absolute;left:8%;right:8%;top:62px;height:2px;
+    background:color-mix(in oklab,var(--brand) 22%,transparent);
+    z-index:0;pointer-events:none;border-radius:2px;
+  }
+  .how-step{position:relative;z-index:1;background:#fff}
+}
+/* Mobile: vertical connector down the badge column */
+@media(max-width:600px){
+  .how-grid{padding-left:18px}
+  .how-grid::before{
+    content:"";position:absolute;left:33px;top:30px;bottom:30px;width:2px;
+    background:color-mix(in oklab,var(--brand) 22%,transparent);
+    z-index:0;pointer-events:none;border-radius:2px;
+  }
+  .how-step{position:relative;z-index:1;border-radius:14px!important;margin-bottom:8px;padding:16px 16px 16px 18px}
+  .how-step:first-child,.how-step:last-child{border-radius:14px!important}
+}
+.how-num{
+  width:44px;height:44px;font-size:17px;font-weight:800;
+  background:var(--brand);color:#fff;
+  box-shadow:0 8px 18px -6px rgba(20,181,166,.55),0 0 0 4px #fff;
+  letter-spacing:-.02em;
+}
+@media(max-width:600px){
+  .how-num{width:40px;height:40px;font-size:16px;margin-bottom:10px}
+}
+/* Strip the giant ghost number behind each step */
+.how-step::before{display:none!important;content:none!important}
