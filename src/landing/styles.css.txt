@@ -94,7 +94,13 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 
 
 /* phone hero */
-.phone-wrap{position:relative;display:flex;justify-content:center}
+.phone-wrap{position:relative;width:fit-content;margin:0 auto}
+.fc-mob-row{display:contents}
+.fc-reservas{right:calc(100% + 16px);left:auto}
+.fc-reviews{left:calc(100% + 16px);right:auto}
+.fc-reservas::after,.fc-reviews::after{content:"";position:absolute;top:14px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.fc-reservas::after{right:-6px;border-left:7px solid #fff;filter:drop-shadow(1px 0 0 rgba(0,0,0,.06))}
+.fc-reviews::after{left:-6px;border-right:7px solid #fff;filter:drop-shadow(-1px 0 0 rgba(0,0,0,.06))}
 .phone-dev{width:260px;background:var(--app);border-radius:34px;border:6px solid #1a1a18;overflow:hidden;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.22),0 8px 24px rgba(0,0,0,.12)}
 .phone-dev img{width:100%;display:block}
 .pnotch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:76px;height:22px;background:#1a1a18;border-radius:0 0 12px 12px;z-index:10}
@@ -414,8 +420,9 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   /* Reposition float cards for mobile */
   .fc-mesa{top:30%!important;right:-5%!important;width:140px!important}
   .fc-lang{bottom:18%!important;left:-5%!important;width:130px!important}
-  .fc-reviews{top:2%!important;right:-4%!important;width:138px!important}
-  .fc-reservas{top:6%!important;left:-4%!important;width:128px!important}
+  .fc-mob-row{display:flex!important;gap:8px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+  .fc-reservas,.fc-reviews{position:static!important;width:auto!important;max-width:48%;top:auto!important;left:auto!important;right:auto!important;padding:8px 10px}
+  .fc-reservas::after,.fc-reviews::after{display:none}
 
   /* Sections */
   .feat{padding:36px 0}
@@ -508,7 +515,6 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .stat-card{padding:10px 12px}
   .stat-n{font-size:18px}
   .fc-mesa{display:none}
-  .fc-reviews{display:none}
 }
 
 /* Prevent horizontal scroll globally */
