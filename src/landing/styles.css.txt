@@ -96,8 +96,8 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 /* phone hero */
 .phone-wrap{position:relative;width:fit-content;margin:0 auto}
 .fc-mob-row{display:contents}
-.fc-reservas{right:calc(100% + 16px);left:auto}
-.fc-reviews{left:calc(100% + 16px);right:auto}
+.fc-reservas{right:calc(100% + 16px);left:auto;top:32px}
+.fc-reviews{left:calc(100% + 16px);right:auto;top:32px}
 .fc-reservas::after,.fc-reviews::after{content:"";position:absolute;top:14px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent}
 .fc-reservas::after{right:-6px;border-left:7px solid #fff;filter:drop-shadow(1px 0 0 rgba(0,0,0,.06))}
 .fc-reviews::after{left:-6px;border-right:7px solid #fff;filter:drop-shadow(-1px 0 0 rgba(0,0,0,.06))}
@@ -427,11 +427,15 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .hero-in > div:first-child{order:1}
   .hero-feats{order:2}
   .hero-stats{display:none!important}
-  .fc,.fc-mesa,.fc-lang,.fc-reviews,.fc-reservas,.fc-mob-row,
-  [class*="callout"],[class*="badge-card"]{display:none!important}
+  .fc,.fc-mesa,.fc-lang,[class*="callout"],[class*="badge-card"]{display:none!important}
+  .fc-reviews,.fc-reservas{display:none!important}
   .hero-feats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:4px}
   .hero-feats li{display:inline-flex;align-items:center;gap:6px;background:#f1efe9;color:#3f3a33;border-radius:20px;padding:4px 10px;font-size:12px;line-height:1.3}
   .hero-feats li span{font-size:13px}
+  .fc-mob-row{display:flex!important;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;list-style:none;padding:0}
+  .fc-mob-row .fc{position:static;box-shadow:none;border:1px solid #e8e8e4;border-radius:10px;padding:8px 12px;font-size:11px;max-width:none;width:auto;overflow:visible}
+  .fc-mob-row .fc-lbl{font-size:9px}
+  .fc-mob-row .fc-sub{font-size:10px}
 }
 @media(max-width:600px){
   /* placeholder kept for spacing — earlier rules continue below */
