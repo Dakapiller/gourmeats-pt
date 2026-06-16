@@ -385,6 +385,52 @@
   </div>
 </section>
 
+<!-- CONTACT / LEAD FORM -->
+<section id="contact">
+  <div class="wrap-sm">
+    <div class="contact-hd">
+      <span class="hero-kicker">Prefere que lhe escrevamos nós</span>
+      <h2 class="contact-h2">Deixe os seus contactos</h2>
+      <p class="contact-sub">Respondemos em menos de 24 horas, sem compromisso.</p>
+    </div>
+    <form class="lead-form" id="leadForm" novalidate>
+      <div class="lead-row">
+        <div class="lead-field">
+          <label for="lf-name">Nome *</label>
+          <input type="text" id="lf-name" name="name" placeholder="O seu nome" required autocomplete="name">
+        </div>
+        <div class="lead-field">
+          <label for="lf-email">Email *</label>
+          <input type="email" id="lf-email" name="email" placeholder="email@restaurante.pt" required autocomplete="email">
+        </div>
+      </div>
+      <div class="lead-row">
+        <div class="lead-field">
+          <label for="lf-restaurant">Restaurante</label>
+          <input type="text" id="lf-restaurant" name="restaurant" placeholder="Nome do restaurante" autocomplete="organization">
+        </div>
+        <div class="lead-field">
+          <label for="lf-phone">Telefone</label>
+          <input type="tel" id="lf-phone" name="phone" placeholder="+351 9xx xxx xxx" autocomplete="tel">
+        </div>
+      </div>
+      <div class="lead-field">
+        <label for="lf-message">Mensagem (opcional)</label>
+        <textarea id="lf-message" name="message" placeholder="Alguma dúvida ou contexto que queira partilhar?" rows="3"></textarea>
+      </div>
+      <div class="lead-form-foot">
+        <button type="submit" class="lead-submit" id="leadSubmit">
+          <span class="lead-submit-txt">Enviar mensagem</span>
+          <span class="lead-submit-spin" hidden aria-hidden="true"></span>
+        </button>
+        <p class="lead-privacy">Os seus dados são usados apenas para lhe responder. Nunca partilhamos com terceiros.</p>
+      </div>
+      <div class="lead-msg lead-msg--ok" id="leadOk" hidden role="alert">✓ Mensagem enviada! Entramos em contacto brevemente.</div>
+      <div class="lead-msg lead-msg--err" id="leadErr" hidden role="alert"></div>
+    </form>
+  </div>
+</section>
+
 <!-- FINAL CTA -->
 <section id="final">
   <div class="wrap">

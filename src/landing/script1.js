@@ -248,3 +248,58 @@ window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 
 setSide(0);
 setAutoLabel();
+
+// ===== LEAD FORM =====
+(function(){
+  var form=document.getElementById('leadForm');
+  if(!form)return;
+  var submit=document.getElementById('leadSubmit');
+  var okMsg=document.getElementById('leadOk');
+  var errMsg=document.getElementById('leadErr');
+  var submitTxt=submit.querySelector('.lead-submit-txt');
+  var submitSpin=submit.querySelector('.lead-submit-spin');
+
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    okMsg.hidden=true;errMsg.hidden=true;
+    var name=form.elements['name'].value.trim();
+    var email=form.elements['email'].value.trim();
+    var valid=true;
+    [form.elements['name'],form.elements['email']].forEach(function(f){f.classList.remove('is-invalid');});
+    if(!name){form.elements['name'].classList.add('is-invalid');valid=false;}
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){form.elements['email'].classList.add('is-invalid');valid=false;}
+    if(!valid)return;
+    submit.disabled=true;submitTxt.hidden=true;submitSpin.hidden=false;
+    try{
+      var res=await fetch('/api/leads',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          name:name,
+          email:email,
+          restaurant:form.elements['restaurant']?.value?.trim()||'',
+          phone:form.elements['phone']?.value?.trim()||'',
+          message:form.elements['message']?.value?.trim()||'',
+        }),
+      });
+      var data=await res.json();
+      if(res.ok){
+        form.reset();
+        okMsg.hidden=false;
+        okMsg.scrollIntoView({behavior:'smooth',block:'nearest'});
+      }else{
+        errMsg.textContent=data.error||'Erro ao enviar. Tente novamente.';
+        errMsg.hidden=false;
+      }
+    }catch(err){
+      errMsg.textContent='Erro de ligação. Verifique a sua internet e tente novamente.';
+      errMsg.hidden=false;
+    }finally{
+      submit.disabled=false;submitTxt.hidden=false;submitSpin.hidden=true;
+    }
+  });
+
+  form.querySelectorAll('input,textarea').forEach(function(el){
+    el.addEventListener('input',function(){this.classList.remove('is-invalid');});
+  });
+})();

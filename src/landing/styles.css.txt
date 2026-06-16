@@ -820,4 +820,27 @@ summary:hover{background:var(--ys)}
   .how-num{width:40px;height:40px;font-size:16px;margin-bottom:10px}
 }
 /* Strip the giant ghost number behind each step */
+/* ===== CONTACT / LEAD FORM ===== */
+#contact{padding:80px 0;background:var(--bg2);border-top:1px solid var(--line)}
+.contact-hd{text-align:center;margin-bottom:40px}
+.contact-h2{font-size:clamp(26px,3.5vw,36px);font-weight:800;letter-spacing:-.4px;color:var(--ink);margin:12px 0 8px}
+.contact-sub{font-size:.95rem;color:var(--ink3)}
+.lead-form{display:flex;flex-direction:column;gap:16px}
+.lead-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lead-field{display:flex;flex-direction:column;gap:6px}
+.lead-field label{font-size:.82rem;font-weight:600;color:var(--ink2)}
+.lead-field input,.lead-field textarea{padding:10px 14px;border:1.5px solid var(--line);border-radius:8px;font-size:.95rem;font-family:inherit;color:var(--ink);background:var(--bg);transition:border-color .15s;outline:none;resize:vertical}
+.lead-field input:focus,.lead-field textarea:focus{border-color:var(--brand)}
+.lead-field input.is-invalid,.lead-field textarea.is-invalid{border-color:#e53e3e}
+.lead-form-foot{display:flex;flex-direction:column;gap:10px;align-items:flex-start;margin-top:4px}
+.lead-submit{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--ink);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .15s,opacity .15s;font-family:inherit}
+.lead-submit:hover{background:var(--ink2)}
+.lead-submit:disabled{opacity:.6;cursor:not-allowed}
+.lead-submit-spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lead-privacy{font-size:.72rem;color:var(--ink3);max-width:360px;line-height:1.5}
+.lead-msg{padding:12px 16px;border-radius:8px;font-size:.9rem;font-weight:500;margin-top:4px}
+.lead-msg--ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.lead-msg--err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+@media(max-width:640px){.lead-row{grid-template-columns:1fr}#contact{padding:56px 0}}
 .how-step::before{display:none!important;content:none!important}
