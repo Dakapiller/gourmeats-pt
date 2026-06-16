@@ -1,11 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getWebRequest } from "vinxi/http";
 import type {} from "@tanstack/react-start";
 
 export const Route = createFileRoute("/api/leads")({
   server: {
     handlers: {
-      POST: async ({ request }) => {
-        const body = await request.json().catch(() => ({}));
+      POST: async () => {
+        const req = getWebRequest();
+        const body = await req.json().catch(() => ({}));
         const { name, email, restaurant, phone, message } = body as Record<string, string>;
 
         if (!name?.trim() || !email?.trim()) {
