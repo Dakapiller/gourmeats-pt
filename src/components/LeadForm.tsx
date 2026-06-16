@@ -1,17 +1,18 @@
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { submitLead } from "@/lib/leads.functions";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
 export function LeadForm() {
+  const submit = useServerFn(submitLead);
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [invalid, setInvalid] = useState<Record<string, boolean>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
+    const fd = new FormData(e.currentTarget);
     const name = (fd.get("name") as string)?.trim();
     const email = (fd.get("email") as string)?.trim();
 
@@ -25,7 +26,7 @@ export function LeadForm() {
 
     setState("loading");
     try {
-      await submitLead({
+      await submit({
         data: {
           name,
           email,
@@ -34,7 +35,7 @@ export function LeadForm() {
           message: (fd.get("message") as string)?.trim(),
         },
       });
-      form.reset();
+      (e.target as HTMLFormElement).reset();
       setState("success");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Erro ao enviar. Tente novamente.");
@@ -64,7 +65,7 @@ export function LeadForm() {
                 name="name"
                 placeholder="O seu nome"
                 className={invalid.name ? "is-invalid" : ""}
-                onInput={() => clearInvalid("name")}
+                onChange={() => clearInvalid("name")}
                 autoComplete="name"
               />
             </div>
@@ -76,7 +77,7 @@ export function LeadForm() {
                 name="email"
                 placeholder="email@restaurante.pt"
                 className={invalid.email ? "is-invalid" : ""}
-                onInput={() => clearInvalid("email")}
+                onChange={() => clearInvalid("email")}
                 autoComplete="email"
               />
             </div>
