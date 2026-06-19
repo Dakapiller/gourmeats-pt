@@ -1036,3 +1036,64 @@ footer{background:var(--bg);border-top-color:var(--line)}
 .ds-auto{font-size:.72rem;color:var(--ink3)}
 /* Mobile tweak for lead form */
 @media(max-width:640px){.lead-row{grid-template-columns:1fr}#contact{padding:56px 0}}
+
+/* ===== COMPREHENSIVE FIXES v2 ===== */
+
+/* 1. Logo — white and 2x visible */
+.logo img{filter:brightness(0) invert(1);height:52px}
+
+/* 2. Demo — minimal centered layout */
+#demo{background:#000!important;border-top:none!important;border-bottom:none!important}
+#demo h2{color:#fff!important;text-align:center}
+#demo .sec-kicker,#demo .sec-sub{display:none!important}
+.demo-inner{flex-direction:column!important;align-items:center!important;gap:40px!important}
+#dside{display:none!important}
+.demo-phone{margin:0 auto}
+
+/* 3. FIX DEMO ANIMATION CONFLICT
+   The previous .dsc.on .tgt rule added `animation:demoPulse` which fights with
+   `sIn` on .hcard elements (cards start opacity:0 and need sIn to become visible).
+   Reset animation here with same specificity but later in cascade → wins for non-hcard tgts.
+   For .hcard:nth-child(1) the higher-specificity rule (0,4,0) still wins with sIn. */
+.dsc.on .tgt{animation:none;outline:2px solid #F59E0B;outline-offset:3px}
+
+/* Pulsing ring via ::after — safe, doesn't touch element's own animation */
+.dsc.on .vadd.tgt,.dsc.on #tap-fim{position:relative}
+.dsc.on .vadd.tgt::after,.dsc.on #tap-fim::after{
+  content:'';position:absolute;inset:-5px;border-radius:100px;
+  border:2px solid #F59E0B;
+  animation:tapPing 1.6s ease-out infinite;
+  pointer-events:none
+}
+@keyframes tapPing{
+  0%{opacity:.9;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.35)}
+}
+
+/* Add button — amber filled */
+.dsc.on .vadd.tgt{background:#F59E0B!important;color:#000!important;font-weight:800;outline:none}
+
+/* Language selection — amber highlight */
+.dsc.on #tap-lang-pt{background:#F59E0B!important;color:#000!important;font-weight:700}
+
+/* Food card — amber glow border */
+.dsc.on #tap-comida{box-shadow:0 0 0 3px #F59E0B,0 0 20px rgba(245,158,11,.35)!important;outline:none}
+
+/* Menu item target */
+.dsc.on #tap-bife{box-shadow:0 0 0 2px #F59E0B!important;border-radius:10px}
+
+/* 4. Logos — remove toggle, fix mobile card sizes */
+.logos-toggle-wrap{display:none!important}
+@media(max-width:640px){
+  .logos-row[data-logos-featured]{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
+  .logo-card{min-width:0!important;width:100%!important;box-sizing:border-box}
+}
+
+/* 5. Remove extra CTAs — keep only hero + demo-cta-box */
+.how-cta{display:none!important}
+#final{display:none!important}
+
+/* 6. Demo CTA — same size as hero .lg button */
+.demo-cta-box .btn-wa{font-size:15.5px!important;padding:14px 28px!important;border-radius:11px!important}
+.demo-cta-box .btn-wa svg{width:19px!important;height:19px!important}
+.demo-cta-box{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;margin-top:0!important;text-align:center}
