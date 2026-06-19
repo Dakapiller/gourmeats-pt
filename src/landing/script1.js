@@ -180,7 +180,7 @@ const obs=new IntersectionObserver(entries=>{
       fcursor&&fcursor.classList.remove('on','tap');
     }
   });
-},{threshold:.3});
+},{threshold:.1});
 const demoEl=document.getElementById('demo');
 if(demoEl)obs.observe(demoEl);
 
@@ -200,21 +200,21 @@ if(dplay)dplay.addEventListener('click',togglePause);
 if(dreset)dreset.addEventListener('click',restart);
 
 // interactions
-document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1);});
-document.getElementById('tap-comida').addEventListener('click',   ()=>{if(cur===0)goTo(1);});
-document.getElementById('tap-lang-pt').addEventListener('click',  ()=>{if(cur===1)goTo(2);});
-document.getElementById('tap-add-pao').addEventListener('click',  e=>{e.stopPropagation();if(cur===2)toast('t-pao',()=>goTo(3));});
-document.getElementById('tap-add-salmao').addEventListener('click',e=>{e.stopPropagation();if(cur===3)toast('t-salmao',()=>goTo(4));});
-document.getElementById('tap-add-ribs').addEventListener('click', e=>{e.stopPropagation();if(cur===4)toast('t-ribs',()=>goTo(5));});
-document.getElementById('tap-add-bac').addEventListener('click',  e=>{e.stopPropagation();if(cur===5)toast('t-bac',()=>goTo(6));});
+document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1,false);});
+document.getElementById('tap-comida').addEventListener('click',   ()=>{if(cur===0)goTo(1,false);});
+document.getElementById('tap-lang-pt').addEventListener('click',  ()=>{if(cur===1)goTo(2,false);});
+document.getElementById('tap-add-pao').addEventListener('click',  e=>{e.stopPropagation();if(cur===2)toast('t-pao',()=>goTo(3,false));});
+document.getElementById('tap-add-salmao').addEventListener('click',e=>{e.stopPropagation();if(cur===3)toast('t-salmao',()=>goTo(4,false));});
+document.getElementById('tap-add-ribs').addEventListener('click', e=>{e.stopPropagation();if(cur===4)toast('t-ribs',()=>goTo(5,false));});
+document.getElementById('tap-add-bac').addEventListener('click',  e=>{e.stopPropagation();if(cur===5)toast('t-bac',()=>goTo(6,false));});
 
 // S6 bacalhau — tap on nav menu button
 document.getElementById('ds6').querySelector('.app-nav').addEventListener('click',e=>{
-  if(cur===5){const t=e.target.closest('.ni');if(t&&t.textContent.includes('Menu'))goTo(6);};
+  if(cur===5){const t=e.target.closest('.ni');if(t&&t.textContent.includes('Menu'))goTo(6,false);};
 });
 
-document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===6)goTo(7);});
-document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8);});
+document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===6)goTo(7,false);});
+document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8,false);});
 const credoEl=document.getElementById('credo');
 if(credoEl)credoEl.addEventListener('click',restart);
 drebtn.addEventListener('click',restart);
@@ -222,8 +222,7 @@ drebtn.addEventListener('click',restart);
 // manual mode if user taps on the screen directly
 SCS.forEach(s=>{if(s)s.addEventListener('click',e=>{
   if(e.target.closest('.tgt, .app-nav, .ds-restart, .ds-ctrl'))return;
-  // tap on empty area → pause cursor + enter manual
-  enterManual();
+  // tapping empty area does nothing — keep auto-advance running
 });});
 
 // Gallery navigation
