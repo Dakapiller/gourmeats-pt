@@ -18,7 +18,7 @@
 
 // ── DEMO ──
 const STEPS=[
-  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque na bandeira para ver os idiomas', tgt:'#tap-flag'},
+  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque em Pratos para entrar', tgt:'#tap-comida'},
   {l:'24+ idiomas automáticos',          h:'A carta no idioma do cliente — sem fazer nada.', p:'Português, inglês, espanhol, francês, árabe, mandarim e mais 18. O cliente não precisa de selecionar nada.',   hint:'Toque em Português para continuar', tgt:'#tap-lang-pt'},
   {l:'Passo 1 · Couvert em vídeo',       h:'Pão com azeite. Ver é desejar.',                 p:'O cliente vê o pão artesanal com o azeite a ser vertido. Já não é uma linha de texto — é apetite imediato.',    hint:'Toque em "Add" para adicionar', tgt:'#tap-add-pao'},
   {l:'Passo 2 · Entradas em vídeo',      h:'Salmão curado e fumado.',                        p:'O fumo a subir, as texturas, o empratamento. O cliente decide em segundos — e pede com confiança.',              hint:'Toque em "Add"', tgt:'#tap-add-salmao'},

@@ -957,3 +957,82 @@ footer{background:var(--bg);border-top-color:var(--line)}
 .lead-msg--ok{background:#052e16;color:#86efac;border:1px solid #166534}
 .lead-msg--err{background:#450a0a;color:#fca5a5;border:1px solid #991b1b}
 @media(max-width:640px){.lead-row{grid-template-columns:1fr}#contact{padding:56px 0}}
+
+/* ===== DEMO — PULSING AMBER TAP TARGETS ===== */
+@keyframes demoPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.7)}
+  60%{box-shadow:0 0 0 10px rgba(245,158,11,0)}
+}
+/* Any tgt on the currently visible screen pulses */
+.dsc.on .tgt{
+  outline:2px solid #F59E0B;
+  outline-offset:3px;
+  animation:demoPulse 1.8s ease-in-out infinite;
+}
+/* "Add" button in video view — amber-filled */
+.dsc.on .vadd.tgt{
+  background:#F59E0B !important;
+  color:#000 !important;
+  font-weight:800;
+  outline:none;
+  box-shadow:0 0 0 0 rgba(245,158,11,.7);
+  animation:demoPulse 1.8s ease-in-out infinite;
+}
+/* Menu item add button */
+.dsc.on .mi-add{
+  background:#F59E0B;
+  color:#000;
+  font-weight:700;
+  padding:3px 10px;
+  border-radius:100px;
+}
+/* "Pronto, chamar o empregado" button already styled amber — just pulse */
+.dsc.on #tap-fim{
+  animation:demoPulse 1.8s ease-in-out infinite;
+}
+/* Hide the flag-tgt outline (flag is now secondary) */
+.dsc.on #tap-flag.tgt{
+  outline:none;
+  animation:none;
+}
+/* Hint text — more prominent */
+.tap-hint{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 14px;
+  background:rgba(245,158,11,.12);
+  border:1px solid rgba(245,158,11,.35);
+  border-radius:100px;
+  font-size:.82rem;
+  font-weight:600;
+  color:#F59E0B;
+  margin-top:4px;
+}
+/* Video play indicator — more prominent */
+.vplay-ind{
+  display:flex !important;
+  align-items:center;
+  gap:6px;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.06em;
+  color:#fff;
+  background:rgba(0,0,0,.55);
+  padding:3px 7px;
+  border-radius:100px;
+}
+.vrec{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#F59E0B;
+  animation:recBlink 1.2s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes recBlink{0%,100%{opacity:1}50%{opacity:.3}}
+/* Demo sidebar — reduce clutter: hide prev button */
+#dprev{display:none!important}
+/* Simplify auto-advance label */
+.ds-auto{font-size:.72rem;color:var(--ink3)}
+/* Mobile tweak for lead form */
+@media(max-width:640px){.lead-row{grid-template-columns:1fr}#contact{padding:56px 0}}
