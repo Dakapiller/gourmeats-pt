@@ -1097,3 +1097,49 @@ footer{background:var(--bg);border-top-color:var(--line)}
 .demo-cta-box .btn-wa{font-size:15.5px!important;padding:14px 28px!important;border-radius:11px!important}
 .demo-cta-box .btn-wa svg{width:19px!important;height:19px!important}
 .demo-cta-box{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;margin-top:0!important;text-align:center}
+
+/* ===== VISIBILITY & CONTRAST v3 ===== */
+
+/* Un-hide #dside (hint + progress + controls) — was display:none above */
+#dside{display:flex!important;flex-direction:column!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:340px!important;margin:0 auto!important}
+
+/* Hide verbose per-step copy — keep only hint/controls */
+#dlbl,#dh,#dp{display:none!important}
+
+/* Tighten gap between controls and phone */
+.demo-inner{gap:24px!important}
+
+/* Progress bar — more visible against black */
+#demo .ds-seg{background:rgba(255,255,255,.18)!important}
+
+/* Auto-advance label — subtle but legible white */
+#demo .ds-auto{color:rgba(255,255,255,.45)!important;background:transparent!important;border:none!important;padding:0!important}
+#demo .ds-auto .ds-auto-dot{background:#F59E0B!important;box-shadow:none!important}
+
+/* Hint pill — prominent amber */
+.tap-hint{background:rgba(245,158,11,.2)!important;border:1.5px solid rgba(245,158,11,.65)!important;color:#FFD060!important;font-size:.9rem!important;font-weight:700!important;padding:10px 20px!important;box-shadow:0 0 16px rgba(245,158,11,.1)!important;margin-top:0!important}
+.tap-hint .tap{font-size:1.1rem!important}
+
+/* Controls — dark-glass buttons */
+#demo .ds-ctrl{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.14)!important;color:rgba(255,255,255,.65)!important}
+#demo .ds-ctrl:hover{border-color:rgba(245,158,11,.6)!important;color:#fff!important;background:rgba(245,158,11,.08)!important}
+#demo .ds-ctrl-play{background:#F59E0B!important;border-color:#F59E0B!important;color:#000!important;box-shadow:0 4px 16px rgba(245,158,11,.35)!important}
+#demo .ds-ctrl-play:hover{background:#D97706!important;border-color:#D97706!important}
+
+/* Redundant restart text button — hide (↺ in controls row handles it) */
+#drebtn{display:none!important}
+
+/* Phone frame — visible rim against pure black */
+.demo-phone{border-color:#2e2e2b!important;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 32px 72px rgba(0,0,0,.7)!important}
+
+/* Tap targets — thicker outline */
+.dsc.on .tgt{outline:2.5px solid #F59E0B!important;outline-offset:4px!important}
+
+/* bife / menu item — stronger amber glow */
+.dsc.on #tap-bife{box-shadow:0 0 0 3px #F59E0B,0 0 20px rgba(245,158,11,.3)!important}
+
+/* tapPing ring — thicker border, slightly faster */
+.dsc.on .vadd.tgt::after,.dsc.on #tap-fim::after{border-width:2.5px!important;animation-duration:1.2s!important;inset:-7px!important}
+
+/* Demo h2 — cleaner heading */
+#demo h2{font-size:clamp(1.3rem,3.5vw,1.85rem)!important;font-weight:800!important;letter-spacing:-.02em!important;line-height:1.25!important;max-width:520px!important;margin-left:auto!important;margin-right:auto!important;margin-bottom:28px!important}
