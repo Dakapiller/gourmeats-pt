@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { LeadForm } from "@/components/LeadForm";
 import styles from "../landing/styles.css.txt?raw";
 import script1 from "../landing/script1.js?raw";
 import { getRenderedLanding } from "@/lib/render-landing.functions";
@@ -67,6 +69,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data } = useSuspenseQuery(landingQueryOptions);
   const ref = useRef<HTMLDivElement>(null);
+  const [formMount, setFormMount] = useState<Element | null>(null);
 
   useEffect(() => {
     const s = document.createElement("script");
@@ -77,10 +80,15 @@ function Index() {
     };
   }, [data.html]);
 
+  useEffect(() => {
+    setFormMount(document.getElementById("lead-form-mount"));
+  }, [data.html]);
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <div ref={ref} dangerouslySetInnerHTML={{ __html: data.html }} />
+      {formMount && createPortal(<LeadForm />, formMount)}
     </>
   );
 }
