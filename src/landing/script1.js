@@ -18,7 +18,7 @@
 
 // ── DEMO ──
 const STEPS=[
-  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque em Pratos para entrar', tgt:'#tap-comida'},
+  {l:'Largo São Domingos · Lisboa',      h:'O cliente abre o menu em segundos.',             p:'A carta abre automaticamente no idioma do telemóvel ao ler o QR code — sem instalação, sem configuração.',        hint:'Toque na bandeira para ver os idiomas', tgt:'#tap-flag'},
   {l:'24+ idiomas automáticos',          h:'A carta no idioma do cliente — sem fazer nada.', p:'Português, inglês, espanhol, francês, árabe, mandarim e mais 18. O cliente não precisa de selecionar nada.',   hint:'Toque em Português para continuar', tgt:'#tap-lang-pt'},
   {l:'Passo 1 · Couvert em vídeo',       h:'Pão com azeite. Ver é desejar.',                 p:'O cliente vê o pão artesanal com o azeite a ser vertido. Já não é uma linha de texto — é apetite imediato.',    hint:'Toque em "Add" para adicionar', tgt:'#tap-add-pao'},
   {l:'Passo 2 · Entradas em vídeo',      h:'Salmão curado e fumado.',                        p:'O fumo a subir, as texturas, o empratamento. O cliente decide em segundos — e pede com confiança.',              hint:'Toque em "Add"', tgt:'#tap-add-salmao'},
@@ -180,7 +180,7 @@ const obs=new IntersectionObserver(entries=>{
       fcursor&&fcursor.classList.remove('on','tap');
     }
   });
-},{threshold:.1});
+},{threshold:.3});
 const demoEl=document.getElementById('demo');
 if(demoEl)obs.observe(demoEl);
 
@@ -200,21 +200,21 @@ if(dplay)dplay.addEventListener('click',togglePause);
 if(dreset)dreset.addEventListener('click',restart);
 
 // interactions
-document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1,false);});
-document.getElementById('tap-comida').addEventListener('click',   ()=>{if(cur===0)goTo(1,false);});
-document.getElementById('tap-lang-pt').addEventListener('click',  ()=>{if(cur===1)goTo(2,false);});
-document.getElementById('tap-add-pao').addEventListener('click',  e=>{e.stopPropagation();if(cur===2)toast('t-pao',()=>goTo(3,false));});
-document.getElementById('tap-add-salmao').addEventListener('click',e=>{e.stopPropagation();if(cur===3)toast('t-salmao',()=>goTo(4,false));});
-document.getElementById('tap-add-ribs').addEventListener('click', e=>{e.stopPropagation();if(cur===4)toast('t-ribs',()=>goTo(5,false));});
-document.getElementById('tap-add-bac').addEventListener('click',  e=>{e.stopPropagation();if(cur===5)toast('t-bac',()=>goTo(6,false));});
+document.getElementById('tap-flag').addEventListener('click',     ()=>{if(cur===0)goTo(1);});
+document.getElementById('tap-comida').addEventListener('click',   ()=>{if(cur===0)goTo(1);});
+document.getElementById('tap-lang-pt').addEventListener('click',  ()=>{if(cur===1)goTo(2);});
+document.getElementById('tap-add-pao').addEventListener('click',  e=>{e.stopPropagation();if(cur===2)toast('t-pao',()=>goTo(3));});
+document.getElementById('tap-add-salmao').addEventListener('click',e=>{e.stopPropagation();if(cur===3)toast('t-salmao',()=>goTo(4));});
+document.getElementById('tap-add-ribs').addEventListener('click', e=>{e.stopPropagation();if(cur===4)toast('t-ribs',()=>goTo(5));});
+document.getElementById('tap-add-bac').addEventListener('click',  e=>{e.stopPropagation();if(cur===5)toast('t-bac',()=>goTo(6));});
 
 // S6 bacalhau — tap on nav menu button
 document.getElementById('ds6').querySelector('.app-nav').addEventListener('click',e=>{
-  if(cur===5){const t=e.target.closest('.ni');if(t&&t.textContent.includes('Menu'))goTo(6,false);};
+  if(cur===5){const t=e.target.closest('.ni');if(t&&t.textContent.includes('Menu'))goTo(6);};
 });
 
-document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===6)goTo(7,false);});
-document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8,false);});
+document.getElementById('tap-bife').addEventListener('click',     ()=>{if(cur===6)goTo(7);});
+document.getElementById('tap-fim').addEventListener('click',      ()=>{if(cur===7)goTo(8);});
 const credoEl=document.getElementById('credo');
 if(credoEl)credoEl.addEventListener('click',restart);
 drebtn.addEventListener('click',restart);
@@ -222,7 +222,8 @@ drebtn.addEventListener('click',restart);
 // manual mode if user taps on the screen directly
 SCS.forEach(s=>{if(s)s.addEventListener('click',e=>{
   if(e.target.closest('.tgt, .app-nav, .ds-restart, .ds-ctrl'))return;
-  // tapping empty area does nothing — keep auto-advance running
+  // tap on empty area → pause cursor + enter manual
+  enterManual();
 });});
 
 // Gallery navigation

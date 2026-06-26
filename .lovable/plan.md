@@ -1,36 +1,40 @@
-## Mobile callouts beside the phone
 
-Edits limited to `src/landing/body.html` and `src/landing/styles.css.txt`. No other sections touched.
+# Landing — 4 focused fixes
 
-### 1. Star instead of green dot on Google Reviews
-`src/landing/body.html` line 42 — inside `.fc-reviews .fc-lbl`, swap `<span class="dot" style="background:#22c55e"></span>` for `<span class="fc-star" aria-hidden="true">★</span>` and recolor the label from green (`#16a34a`) to a neutral dark (`#1a1a18`) so the star carries the meaning. Reservas keeps its green dot.
+All changes are CSS/HTML only in `src/landing/body.html` and `src/landing/styles.css.txt`. No copy changes, no new sections, no DB.
 
-Add a tiny `.fc-star` rule in `styles.css.txt` (size ~11px, color `#f5a623`, margin-right 4px, vertical-align baseline) so it matches the dot's footprint.
+## 1. Hero — remove green fade, simplify
+- Remove the green radial/linear gradient and any glow layers from `.hero` (background → plain page background).
+- Remove decorative blobs/blur/SVG noise inside `.hero` (any `::before`/`::after` overlays).
+- Keep: kicker, H1, sub, primary CTA, hero stats. Drop secondary visual ornaments (extra pill chips, decorative arrows, gradient text on the headline if present — headline becomes solid foreground color).
+- Tighten hero vertical padding slightly so the clean version doesn't feel empty.
 
-### 2. Re-float the callouts on mobile, next to the phone (not stacked below)
+## 2. Demo section — fits in one mobile screen
+Target: section height ≤ 100vh on screens ≤ 640px, with the phone mockup as the clear focus.
+- Reduce top/bottom padding of the demo section on mobile.
+- Shrink the "DEMO INTERATIVA" kicker + H2 line-height and margin-bottom on mobile.
+- Hide the explanatory paragraph under the H2 on mobile (`display:none` ≤ 640px), keep on desktop.
+- Collapse the dashed progress segments into a thin single bar on mobile (smaller height, no per-step labels).
+- Reduce gap between control buttons and "Recomeçar a demo".
+- Cap the phone mockup height with `max-height: calc(100vh - 320px)` on mobile so the whole block fits.
+- "Pronto para oferecer esta experiência?" CTA card: keep, but reduce its padding on mobile.
 
-In the `@media(max-width:768px)` block in `styles.css.txt` (currently lines 422–439):
+## 3. Gallery nav — 3 tabs visible at once on mobile
+In `.gallery-nav` / `.gnav-btn` mobile rules (≤ 640px):
+- `.gallery-nav { display:flex; flex-direction:row; gap:4px; overflow:visible; }` (drop scroll).
+- `.gnav-btn { padding:6px 10px; font-size:11px; flex:1 1 0; min-width:0; }`
+- Hide the numeric badge (`.gnav-num`) on mobile to save room; keep the label only.
+- Label `.gnav-lbl` truncates with ellipsis if needed but at 11px all 3 fit at 375px.
+- Keep desktop side-rail layout untouched.
 
-- Remove the lines that hide `.fc-reviews,.fc-reservas` and the `.fc,.fc-mesa,.fc-lang,[class*="callout"]...` selector (keep them visible on mobile).
-- Remove the entire `.fc-mob-row` mobile pill ruleset (lines 435–438) and the `.fc-mob-row{display:contents}` desktop line (line 98) — wrapper goes back to passive container.
-- Hide `.hero-feats` on mobile (`display:none`) since the cards return.
-- Override desktop positioning so the two cards sit immediately to each side of the 210px phone, aligned with its top browser bar:
-  - `.phone-wrap{position:relative}` (already set)
-  - `.fc-reservas{position:absolute;top:38px;right:auto;left:-6px;width:96px;max-width:96px;padding:6px 8px;font-size:10px;transform:translateX(-100%)}`
-  - `.fc-reviews{position:absolute;top:38px;left:auto;right:-6px;width:96px;max-width:96px;padding:6px 8px;font-size:10px;transform:translateX(100%)}`
-  - Inline `width:168px`/`width:152px` from the HTML is overridden by the mobile rule.
-  - Shrink inner type: `.fc-lbl{font-size:9px;margin-bottom:2px}`, `.fc-sub{font-size:9.5px;line-height:1.3}`.
-  - Arrows: keep the existing `::after` pointers (already point inward toward the phone) but reduce border size to 5px so they fit the smaller card.
-- Text containment: keep `word-wrap:break-word;overflow-wrap:break-word;overflow:hidden` (already on `.fc`). With 96px width and 9–10px type, the labels `Google Reviews` / `Reservas` and short subs stay on 1–2 lines without clipping.
+## 4. Implementação — connector line + bolder badges
+- Add a thin connector line between the 4 numbered steps:
+  - Desktop: horizontal line behind the row of badges (`::before` on the steps container, `height:2px`, sits at badge vertical center, color `color-mix(in oklab, var(--teal) 25%, transparent)`).
+  - Mobile: vertical line down the center of the badge column (`::before` `width:2px`, full height between first and last badge).
+- Make number badges bolder/prominent: larger size (44px desktop / 40px mobile), solid teal background, white number, slight shadow, `font-weight:800`.
+- Remove any extra decorative chips/icons around the steps; keep number + short title + 1-line description.
+- Tighten vertical gap on mobile so the 4 steps feel like a fast sequence, not a long list.
 
-### 3. Mobile layout order
-
-Keep `.hero-in{flex-direction:column;gap:24px}` and `.phone-wrap{order:-1}` so the phone still renders first on mobile. `.hero-stats{display:none}` stays. The callouts come along with the phone since they're its children, so they reposition automatically.
-
-### Risk / fallback for very narrow screens (<360px)
-
-96px cards with `translateX(±100%)` need ~96px of free space on each side of the 210px phone. On a 360px viewport that's `(360−210)/2 = 75px` per side — 21px short. Add a `@media(max-width:380px)` tweak: shrink phone to `width:190px` and cards to `width:84px`, so it fits without horizontal scroll.
-
-### Files changed
-- `src/landing/body.html` (Google Reviews dot → ⭐, label color)
-- `src/landing/styles.css.txt` (mobile callout repositioning, hide `.hero-feats` on mobile, `.fc-star`, narrow-screen tweak)
+## Files touched
+- `src/landing/body.html` — remove hero decorative blobs, simplify demo progress markup, swap gallery-nav structure if needed for badge hide.
+- `src/landing/styles.css.txt` — all visual rules above (hero background, demo mobile sizing, gallery-nav mobile, steps connector + badges).
