@@ -69,13 +69,17 @@ function Index() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const SCRIPT_ID = "gourmeats-landing-script";
+    document.getElementById(SCRIPT_ID)?.remove();
     const s = document.createElement("script");
-    s.textContent = script1;
+    s.id = SCRIPT_ID;
+    s.textContent = "(function(){\n" + script1 + "\n})();";
     document.body.appendChild(s);
     return () => {
       s.remove();
     };
   }, [data.html]);
+
 
   return (
     <>
