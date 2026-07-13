@@ -509,7 +509,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   h1{font-size:26px}
   .btn-wa.lg{font-size:13.5px;padding:12px 18px}
   .demo-phone{--demo-w:210;height:428px}
-  .phone-dev{width:188px}
+  .phone-dev{width:188px;--demo-w:188;height:384px}
   .hero-stats{gap:8px}
   .stat-card{padding:10px 12px}
   .stat-n{font-size:18px}
