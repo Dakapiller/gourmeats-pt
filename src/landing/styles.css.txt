@@ -450,7 +450,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .ds-h{font-size:clamp(16px,4.5vw,20px)}
   .ds-p{font-size:12.5px}
   .ds-lbl{font-size:9px}
-  .demo-phone{width:240px;height:490px}
+  .demo-phone{--demo-w:240;height:490px}
   .ds-restart{font-size:10.5px;padding:7px 14px}
 
   /* How steps */
