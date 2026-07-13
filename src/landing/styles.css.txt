@@ -81,9 +81,11 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 
 @media (max-width:900px){
   .gallery-wrap{grid-template-columns:1fr;padding:0 16px 40px}
-  .gallery-nav{flex-direction:row;gap:8px;padding:0 0 16px;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .gallery-nav{flex-direction:row;gap:6px;padding:0 0 16px;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:visible;scrollbar-width:none}
   .gallery-nav::-webkit-scrollbar{display:none}
-  .gnav-btn{flex:0 0 auto;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff}
+  .gnav-btn{flex:1 1 0;min-width:0;padding:8px 8px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:11.5px;gap:6px;justify-content:center}
+  .gnav-btn .gnav-num{padding:2px 5px;font-size:10px}
+  .gnav-btn .gnav-lbl{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .gnav-btn .gnav-bar{display:none}
   .gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
   .gnav-btn.active .gnav-num{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
@@ -153,11 +155,11 @@ h2{font-size:clamp(26px,3.5vw,36px);font-weight:800;line-height:1.15;letter-spac
 @keyframes autoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
 /* demo phone */
-.demo-phone{width:282px;height:576px;background:var(--app);border-radius:36px;border:7px solid #1a1a18;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 28px 60px rgba(0,0,0,.2),0 6px 18px rgba(0,0,0,.1)}
+.demo-phone{--demo-w:282;--demo-vw:390;width:calc(var(--demo-w) * 1px);height:576px;background:var(--app);border-radius:36px;border:7px solid #1a1a18;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 28px 60px rgba(0,0,0,.2),0 6px 18px rgba(0,0,0,.1)}
 .demo-phone .dn{position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:23px;background:#1a1a18;border-radius:0 0 13px 13px;z-index:30}
 .dscreen{width:100%;height:100%;position:relative;overflow:hidden;background:var(--app)}
 .dscreen-live{background:#fff}
-.dscreen-live iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+.dscreen-live iframe{position:absolute;top:0;left:0;width:calc(var(--demo-vw) * 1px);height:calc(100% * var(--demo-vw) / var(--demo-w));transform:scale(calc(var(--demo-w) / var(--demo-vw)));transform-origin:top left;border:0;z-index:2}
 .demo-fallback{display:none;position:absolute;inset:0;z-index:3;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:#fff}
 .demo-fallback p{font-size:13px;color:var(--ink2);line-height:1.5;max-width:200px}
 .demo-fallback-btn{display:inline-flex;align-items:center;gap:8px;background:var(--y);color:#000;font-size:12px;font-weight:700;padding:12px 20px;border-radius:100px;text-decoration:none}
@@ -388,8 +390,8 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   #hero{padding:72px 0 28px}
   .how-grid{grid-template-columns:1fr}
   .top-r .btn-ghost{display:none}
-  .logos-row{gap:8px}
-  .logo-card{min-width:130px;padding:12px 14px}
+  .logos-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .logo-card{min-width:0;width:auto;padding:14px 10px}
 
   /* Topbar */
   .top-in{height:54px;padding:0 16px}
@@ -448,7 +450,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .ds-h{font-size:clamp(16px,4.5vw,20px)}
   .ds-p{font-size:12.5px}
   .ds-lbl{font-size:9px}
-  .demo-phone{width:240px;height:490px}
+  .demo-phone{--demo-w:240;height:490px}
   .ds-restart{font-size:10.5px;padding:7px 14px}
 
   /* How steps */
@@ -504,7 +506,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   .wrap,.wrap-sm{padding:0 14px}
   h1{font-size:26px}
   .btn-wa.lg{font-size:13.5px;padding:12px 18px}
-  .demo-phone{width:210px;height:428px}
+  .demo-phone{--demo-w:210;height:428px}
   .phone-dev{width:188px}
   .hero-stats{gap:8px}
   .stat-card{padding:10px 12px}
