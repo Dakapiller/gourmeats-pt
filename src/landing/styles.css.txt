@@ -81,9 +81,11 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 
 @media (max-width:900px){
   .gallery-wrap{grid-template-columns:1fr;padding:0 16px 40px}
-  .gallery-nav{flex-direction:row;gap:8px;padding:0 0 16px;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .gallery-nav{flex-direction:row;gap:6px;padding:0 0 16px;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:visible;scrollbar-width:none}
   .gallery-nav::-webkit-scrollbar{display:none}
-  .gnav-btn{flex:0 0 auto;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff}
+  .gnav-btn{flex:1 1 0;min-width:0;padding:8px 8px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:11.5px;gap:6px;justify-content:center}
+  .gnav-btn .gnav-num{padding:2px 5px;font-size:10px}
+  .gnav-btn .gnav-lbl{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .gnav-btn .gnav-bar{display:none}
   .gnav-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
   .gnav-btn.active .gnav-num{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
