@@ -415,7 +415,7 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
 
   /* Phone hero */
   .phone-wrap{margin:0 auto}
-  .phone-dev{width:210px}
+  .phone-dev{width:210px;--demo-w:210;height:428px}
   .fc{font-size:10px;padding:8px 10px}
   .fc-val{font-size:12px}
   .fc-sub{font-size:9px}
