@@ -114,11 +114,11 @@ h1{font-size:clamp(36px,4.5vw,52px);font-weight:800;line-height:1.1;letter-spaci
 /* logos */
 #logos{padding:40px 0;border-bottom:1px solid var(--line);background:var(--bg2)}
 .logos-lbl{text-align:center;font-size:12.5px;color:var(--ink3);font-weight:500;margin-bottom:22px}
-.logos-row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.logos-row{display:flex;align-items:stretch;justify-content:center;gap:14px;flex-wrap:wrap}
 .logo-card{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 22px;background:#fff;border:1px solid var(--line);border-radius:14px;transition:border-color .15s,box-shadow .15s;min-width:150px}
 .logo-card:hover{border-color:var(--y);box-shadow:0 2px 14px rgba(20,181,166,.2)}
 .logo-card img{width:64px;height:64px;border-radius:50%;object-fit:cover}
-.logo-card-name{font-size:13.5px;font-weight:700}
+.logo-card-name{font-size:13.5px;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;line-height:1.2;text-align:center}
 .logo-card-type{font-size:11px;color:var(--ink3)}
 .logo-card-cta{font-size:10.5px;font-weight:700;color:var(--yd);background:var(--ys);padding:3px 10px;border-radius:5px}
 
