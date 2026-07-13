@@ -390,8 +390,8 @@ footer{background:#0c0c0b;padding:26px 0;text-align:center;border-top:1px solid 
   #hero{padding:72px 0 28px}
   .how-grid{grid-template-columns:1fr}
   .top-r .btn-ghost{display:none}
-  .logos-row{gap:8px}
-  .logo-card{min-width:130px;padding:12px 14px}
+  .logos-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .logo-card{min-width:0;width:auto;padding:14px 10px}
 
   /* Topbar */
   .top-in{height:54px;padding:0 16px}
