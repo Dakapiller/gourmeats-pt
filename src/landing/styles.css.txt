@@ -593,7 +593,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:rgba(14,143,132,.25)}
 
 /* Phone — premium shadow + soft glow halo */
-.phone-wrap::after{content:"";position:absolute;inset:-8% -12%;background:radial-gradient(50% 50% at 50% 50%,rgba(20,181,166,.22),transparent 70%);filter:blur(20px);z-index:-1;pointer-events:none}
+.hero-visual::after{content:"";position:absolute;inset:-8% -12%;background:radial-gradient(50% 50% at 50% 50%,rgba(20,181,166,.22),transparent 70%);filter:blur(20px);z-index:-1;pointer-events:none}
 .phone-dev{box-shadow:0 40px 90px -20px rgba(17,17,16,.30),0 12px 28px -8px rgba(17,17,16,.14),0 0 0 1px rgba(0,0,0,.06)}
 .demo-phone{box-shadow:0 40px 90px -20px rgba(17,17,16,.30),0 12px 28px -8px rgba(17,17,16,.14),0 0 0 1px rgba(0,0,0,.06)}
 .gallery-phone-inner{box-shadow:0 28px 64px -20px rgba(17,17,16,.22),0 8px 18px -6px rgba(17,17,16,.10)}
