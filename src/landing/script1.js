@@ -35,3 +35,92 @@ document.querySelectorAll('.sec-head, .how-step, .stat-card, .logo-card, .galler
 const topEl=document.getElementById('top');
 const onScroll=()=>{if(topEl)topEl.classList.toggle('scrolled',window.scrollY>8);};
 window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* ============ REDESIGN v3 behaviors ============ */
+(function(){
+  // Nav: border on scroll
+  var nav = document.getElementById('top');
+  if(nav){
+    var onScroll = function(){
+      if(window.scrollY > 8) nav.classList.add('is-scrolled');
+      else nav.classList.remove('is-scrolled');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+  }
+  // Nav: mobile hamburger
+  var burger = document.querySelector('[data-nav-burger]');
+  var panel = document.querySelector('[data-nav-panel]');
+  if(burger && panel){
+    var setOpen = function(open){
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if(open){ panel.removeAttribute('hidden'); panel.classList.add('is-open'); }
+      else{ panel.classList.remove('is-open'); panel.setAttribute('hidden',''); }
+    };
+    burger.addEventListener('click', function(){
+      setOpen(burger.getAttribute('aria-expanded') !== 'true');
+    });
+    panel.querySelectorAll('[data-nav-close]').forEach(function(a){
+      a.addEventListener('click', function(){ setOpen(false); });
+    });
+  }
+  // Hero: staggered reveal on mount
+  var heroEls = document.querySelectorAll('[data-hero-el]');
+  if(heroEls.length){
+    setTimeout(function(){
+      heroEls.forEach(function(el, i){
+        setTimeout(function(){ el.classList.add('is-in'); }, i * 80);
+      });
+    }, 80);
+  }
+  // Generic reveal-on-scroll
+  var reveals = document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window && reveals.length){
+    var ro = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('is-in'); ro.unobserve(e.target); }
+      });
+    }, {threshold: 0.2});
+    reveals.forEach(function(el){ ro.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('is-in'); });
+  }
+  // Stat count-up
+  var stats = document.querySelectorAll('#stats [data-stat]');
+  if('IntersectionObserver' in window && stats.length){
+    var seen = false;
+    var so = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!seen && e.isIntersecting){
+          seen = true;
+          stats.forEach(function(card){
+            var raw = card.getAttribute('data-stat-value') || '';
+            var m = raw.match(/-?\d+(?:[.,]\d+)?/);
+            if(!m){ return; }
+            var numStr = m[0].replace(',', '.');
+            var target = parseFloat(numStr);
+            if(!isFinite(target)){ return; }
+            var isInt = numStr.indexOf('.') === -1;
+            var prefix = raw.slice(0, m.index);
+            var suffix = raw.slice(m.index + m[0].length);
+            var nEl = card.querySelector('.stat-n');
+            if(!nEl) return;
+            var dur = 900, start = performance.now();
+            var ease = function(t){ return 1 - Math.pow(1 - t, 3); };
+            var step = function(now){
+              var t = Math.min(1, (now - start) / dur);
+              var v = target * ease(t);
+              var display = isInt ? Math.round(v).toString() : v.toFixed(1).replace('.', ',');
+              nEl.textContent = prefix + display + suffix;
+              if(t < 1) requestAnimationFrame(step);
+              else nEl.textContent = raw;
+            };
+            requestAnimationFrame(step);
+          });
+          so.disconnect();
+        }
+      });
+    }, {threshold: 0.2});
+    so.observe(document.getElementById('stats'));
+  }
+})();

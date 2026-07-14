@@ -61,7 +61,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
     const heroStatsHtml = (heroStats.data ?? [])
       .map(
         (st) =>
-          `<div class="stat-card"><div class="stat-n">${lightHtml(
+          `<div class="stat-card" data-stat data-stat-value="${escapeHtml(st.value ?? "")}"><div class="stat-n">${lightHtml(
             st.value,
           )}</div><div class="stat-l">${lightHtml(st.label)}</div></div>`,
       )
@@ -92,6 +92,13 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       ? `<button type="button" class="logos-toggle" data-logos-toggle aria-expanded="false"><span class="logos-toggle-more">Ver todos os restaurantes (${allRestaurants.length})</span><span class="logos-toggle-less">Mostrar menos</span></button>`
       : "";
 
+    const marqueeNames = allRestaurants.map((r) => r.name);
+    const renderMarqueeGroup = () =>
+      marqueeNames.map((n) => `<span class="trusted-name">${escapeHtml(n)}</span><span class="trusted-sep" aria-hidden="true">•</span>`).join("");
+    const trustedMarqueeHtml = marqueeNames.length > 0
+      ? `<div class="trusted-group">${renderMarqueeGroup()}</div><div class="trusted-group" aria-hidden="true">${renderMarqueeGroup()}</div>`
+      : "";
+
 
     const proofHtml = (proof.data ?? [])
       .map(
@@ -120,7 +127,9 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%HERO_KICKER%%/g, escapeHtml(h.kicker ?? ""))
       .replace(/%%HERO_H1%%/g, lightHtml(h.headline ?? ""))
       .replace(/%%HERO_SUB%%/g, lightHtml(h.subheadline ?? ""))
+      .replace(/%%HERO_CTA_LABEL%%/g, escapeHtml(h.primary_cta_label ?? "Pedir demonstração"))
       .replace(/%%HERO_STATS%%/g, heroStatsHtml)
+      .replace(/%%TRUSTED_MARQUEE%%/g, trustedMarqueeHtml)
       .replace(/%%LOGOS_ROW%%/g, logosHtml)
       .replace(/%%LOGOS_EXTRA%%/g, logosExtraHtml)
       .replace(/%%LOGOS_TOGGLE%%/g, logosToggleHtml)
