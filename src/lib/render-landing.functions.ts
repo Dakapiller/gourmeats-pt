@@ -61,7 +61,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
     const heroStatsHtml = (heroStats.data ?? [])
       .map(
         (st) =>
-          `<div class="stat-card"><div class="stat-n">${lightHtml(
+          `<div class="stat-card" data-stat data-stat-value="${escapeHtml(st.value ?? "")}"><div class="stat-n">${lightHtml(
             st.value,
           )}</div><div class="stat-l">${lightHtml(st.label)}</div></div>`,
       )
