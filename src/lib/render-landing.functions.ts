@@ -170,6 +170,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%FAQ_LIST%%/g, faqHtml)
       .replace(/%%FINAL_H%%/g, lightHtml(c.headline ?? ""))
       .replace(/%%FINAL_SUB%%/g, lightHtml(c.subheadline ?? ""))
+      .replace(/%%FINAL_CTA_LABEL%%/g, escapeHtml(c.primary_cta_label ?? "Falar no WhatsApp agora"))
       .replace(/%%DEMO_REAL_LIST%%/g, demoRealListHtml)
       .replace(/%%DEMO_REAL_FIRST_URL%%/g, escapeHtml(demoRealFirstUrl))
       .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName))
