@@ -53,6 +53,7 @@ type Row = {
   featured: boolean;
   featured_order: number | null;
   is_new: boolean;
+  accent_color: string | null;
   updated_at: string;
 };
 
