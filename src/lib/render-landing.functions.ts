@@ -172,7 +172,8 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%FINAL_SUB%%/g, lightHtml(c.subheadline ?? ""))
       .replace(/%%DEMO_REAL_LIST%%/g, demoRealListHtml)
       .replace(/%%DEMO_REAL_FIRST_URL%%/g, escapeHtml(demoRealFirstUrl))
-      .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName));
+      .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName))
+      .replace(/%%PROCESS_STEPS%%/g, processStepsHtml);
 
     // Global replacement of contact info (phone + email) baked in the static template
     const waNumber = (s.whatsapp_number ?? "+351916082384").replace(/[^\d]/g, "");
