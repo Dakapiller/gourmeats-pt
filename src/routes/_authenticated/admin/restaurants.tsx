@@ -152,6 +152,7 @@ function RestaurantsAdmin() {
       featured: editing.featured,
       featured_order: editing.featured ? (editing.featured_order ?? featuredCount + 1) : null,
       is_new: editing.is_new,
+      accent_color: editing.accent_color || null,
     };
     const { error } = editing.id
       ? await supabase.from("restaurants").update(payload).eq("id", editing.id)
