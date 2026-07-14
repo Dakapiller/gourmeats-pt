@@ -92,6 +92,13 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       ? `<button type="button" class="logos-toggle" data-logos-toggle aria-expanded="false"><span class="logos-toggle-more">Ver todos os restaurantes (${allRestaurants.length})</span><span class="logos-toggle-less">Mostrar menos</span></button>`
       : "";
 
+    const marqueeNames = allRestaurants.map((r) => r.name);
+    const renderMarqueeGroup = () =>
+      marqueeNames.map((n) => `<span class="trusted-name">${escapeHtml(n)}</span><span class="trusted-sep" aria-hidden="true">•</span>`).join("");
+    const trustedMarqueeHtml = marqueeNames.length > 0
+      ? `<div class="trusted-group">${renderMarqueeGroup()}</div><div class="trusted-group" aria-hidden="true">${renderMarqueeGroup()}</div>`
+      : "";
+
 
     const proofHtml = (proof.data ?? [])
       .map(
