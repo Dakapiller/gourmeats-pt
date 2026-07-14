@@ -394,6 +394,29 @@ function RestaurantsAdmin() {
                   </p>
                 )}
               </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="accent">Cor de destaque (demo real)</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="accent"
+                    type="color"
+                    className="w-14 h-9 p-1 cursor-pointer"
+                    value={editing.accent_color || "#0d9488"}
+                    onChange={(e) => setEditing({ ...editing, accent_color: e.target.value })}
+                  />
+                  <Input
+                    type="text"
+                    className="w-32"
+                    placeholder="#0d9488"
+                    value={editing.accent_color ?? ""}
+                    onChange={(e) => setEditing({ ...editing, accent_color: e.target.value })}
+                  />
+                  {editing.accent_color && (
+                    <button type="button" className="text-xs text-muted-foreground hover:text-foreground underline" onClick={() => setEditing({ ...editing, accent_color: null })}>Limpar</button>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">Usada como borda no seletor "Demo real". Se vazio, usa teal (#0d9488).</p>
+              </div>
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Label htmlFor="sort">Ordem</Label>
