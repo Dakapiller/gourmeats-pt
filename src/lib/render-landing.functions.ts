@@ -24,7 +24,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const sb = supabaseAdmin;
 
-    const [settings, hero, heroStats, proof, restaurants, faq, cta] = await Promise.all([
+    const [settings, hero, heroStats, proof, restaurants, faq, cta, features] = await Promise.all([
       sb.from("site_settings").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_section").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_stats").select("id, value, label").eq("visible", true).order("sort_order"),
@@ -32,6 +32,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order, is_new, accent_color").eq("visible", true).order("sort_order"),
       sb.from("faq_items").select("id, question, answer").eq("visible", true).order("sort_order"),
       sb.from("cta_section").select("*").eq("id", 1).maybeSingle(),
+      sb.from("features").select("id, title, description").eq("visible", true).order("sort_order").limit(4),
     ]);
 
     const s = settings.data ?? {
