@@ -53,6 +53,7 @@ type Row = {
   featured: boolean;
   featured_order: number | null;
   is_new: boolean;
+  accent_color: string | null;
   updated_at: string;
 };
 
@@ -129,6 +130,7 @@ function RestaurantsAdmin() {
       featured: false,
       featured_order: null,
       is_new: false,
+      accent_color: null,
       updated_at: new Date().toISOString(),
     });
     setOpen(true);
@@ -150,6 +152,7 @@ function RestaurantsAdmin() {
       featured: editing.featured,
       featured_order: editing.featured ? (editing.featured_order ?? featuredCount + 1) : null,
       is_new: editing.is_new,
+      accent_color: editing.accent_color || null,
     };
     const { error } = editing.id
       ? await supabase.from("restaurants").update(payload).eq("id", editing.id)
@@ -390,6 +393,29 @@ function RestaurantsAdmin() {
                     <AlertTriangle className="h-3 w-3" /> Sem URL, o cartão não será clicável na landing.
                   </p>
                 )}
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="accent">Cor de destaque (demo real)</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="accent"
+                    type="color"
+                    className="w-14 h-9 p-1 cursor-pointer"
+                    value={editing.accent_color || "#0d9488"}
+                    onChange={(e) => setEditing({ ...editing, accent_color: e.target.value })}
+                  />
+                  <Input
+                    type="text"
+                    className="w-32"
+                    placeholder="#0d9488"
+                    value={editing.accent_color ?? ""}
+                    onChange={(e) => setEditing({ ...editing, accent_color: e.target.value })}
+                  />
+                  {editing.accent_color && (
+                    <button type="button" className="text-xs text-muted-foreground hover:text-foreground underline" onClick={() => setEditing({ ...editing, accent_color: null })}>Limpar</button>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">Usada como borda no seletor "Demo real". Se vazio, usa teal (#0d9488).</p>
               </div>
               <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">

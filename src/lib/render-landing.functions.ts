@@ -29,7 +29,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       sb.from("hero_section").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_stats").select("id, value, label").eq("visible", true).order("sort_order"),
       sb.from("proof_cards").select("id, quote, author_name, author_role").eq("visible", true).order("sort_order"),
-      sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order, is_new").eq("visible", true).order("sort_order"),
+      sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order, is_new, accent_color").eq("visible", true).order("sort_order"),
       sb.from("faq_items").select("id, question, answer").eq("visible", true).order("sort_order"),
       sb.from("cta_section").select("*").eq("id", 1).maybeSingle(),
     ]);
@@ -99,6 +99,28 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       ? `<div class="trusted-group">${renderMarqueeGroup()}</div><div class="trusted-group" aria-hidden="true">${renderMarqueeGroup()}</div>`
       : "";
 
+    // --- Demo Real: interactive restaurant selector ---
+    const featuredWithUrl = featured.filter((r) => !!r.link_url);
+    const anyWithUrl = allRestaurants.filter((r) => !!r.link_url);
+    const demoRealList = featuredWithUrl.length >= 2 ? featuredWithUrl : anyWithUrl.slice(0, 5);
+    const renderDemoItem = (r: typeof allRestaurants[number], selected: boolean) => {
+      const accent = (r.accent_color && /^#[0-9a-fA-F]{3,8}$/.test(r.accent_color)) ? r.accent_color : "#0d9488";
+      const img = r.logo_url
+        ? `<img src="${escapeHtml(r.logo_url)}" alt="" class="demo-item-logo">`
+        : `<div class="demo-item-logo demo-item-logo-ph" style="background:${accent}">${escapeHtml(
+            (r.name || "??").trim().split(/\s+/).slice(0, 2).map((w) => w[0] ?? "").join("").slice(0, 2).toUpperCase(),
+          )}</div>`;
+      return `<button type="button" class="demo-item${selected ? " is-selected" : ""}" data-demo-item data-url="${escapeHtml(
+        r.link_url ?? "",
+      )}" data-name="${escapeHtml(r.name)}" data-accent="${escapeHtml(accent)}" role="option"${selected ? ' aria-selected="true"' : ""} style="--accent:${accent}">${img}<div class="demo-item-body"><div class="demo-item-name">${escapeHtml(
+        r.name,
+      )}</div><div class="demo-item-cta">Ver carta →</div></div></button>`;
+    };
+    const demoRealListHtml = demoRealList.map((r, i) => renderDemoItem(r, i === 0)).join("");
+    const demoRealFirst = demoRealList[0];
+    const demoRealFirstUrl = demoRealFirst?.link_url ?? "";
+    const demoRealFirstName = demoRealFirst?.name ?? "um cliente Gourmeats";
+
 
     const proofHtml = (proof.data ?? [])
       .map(
@@ -136,7 +158,10 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%PROOF_GRID%%/g, proofHtml)
       .replace(/%%FAQ_LIST%%/g, faqHtml)
       .replace(/%%FINAL_H%%/g, lightHtml(c.headline ?? ""))
-      .replace(/%%FINAL_SUB%%/g, lightHtml(c.subheadline ?? ""));
+      .replace(/%%FINAL_SUB%%/g, lightHtml(c.subheadline ?? ""))
+      .replace(/%%DEMO_REAL_LIST%%/g, demoRealListHtml)
+      .replace(/%%DEMO_REAL_FIRST_URL%%/g, escapeHtml(demoRealFirstUrl))
+      .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName));
 
     // Global replacement of contact info (phone + email) baked in the static template
     const waNumber = (s.whatsapp_number ?? "+351916082384").replace(/[^\d]/g, "");

@@ -232,6 +232,7 @@ export type Database = {
       }
       restaurants: {
         Row: {
+          accent_color: string | null
           featured: boolean
           featured_order: number | null
           id: string
@@ -244,6 +245,7 @@ export type Database = {
           visible: boolean
         }
         Insert: {
+          accent_color?: string | null
           featured?: boolean
           featured_order?: number | null
           id?: string
@@ -256,6 +258,7 @@ export type Database = {
           visible?: boolean
         }
         Update: {
+          accent_color?: string | null
           featured?: boolean
           featured_order?: number | null
           id?: string
