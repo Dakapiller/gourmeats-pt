@@ -24,7 +24,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const sb = supabaseAdmin;
 
-    const [settings, hero, heroStats, proof, restaurants, faq, cta] = await Promise.all([
+    const [settings, hero, heroStats, proof, restaurants, faq, cta, features] = await Promise.all([
       sb.from("site_settings").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_section").select("*").eq("id", 1).maybeSingle(),
       sb.from("hero_stats").select("id, value, label").eq("visible", true).order("sort_order"),
@@ -32,6 +32,7 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       sb.from("restaurants").select("id, name, logo_url, link_url, featured, featured_order, is_new, accent_color").eq("visible", true).order("sort_order"),
       sb.from("faq_items").select("id, question, answer").eq("visible", true).order("sort_order"),
       sb.from("cta_section").select("*").eq("id", 1).maybeSingle(),
+      sb.from("features").select("id, title, description").eq("visible", true).order("sort_order").limit(4),
     ]);
 
     const s = settings.data ?? {
@@ -144,6 +145,16 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       )
       .join("");
 
+    const processStepsHtml = (features.data ?? [])
+      .slice(0, 4)
+      .map(
+        (f, i) =>
+          `<li class="process-step" data-step-reveal style="--i:${i}"><div class="process-num">${i + 1}</div><div class="process-body"><h3 class="process-title">${escapeHtml(
+            f.title,
+          )}</h3><p class="process-desc">${lightHtml(f.description ?? "")}</p></div></li>`,
+      )
+      .join("");
+
     // Render template
     let html = bodyTemplate
       .replace(/%%HERO_KICKER%%/g, escapeHtml(h.kicker ?? ""))
@@ -159,9 +170,11 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       .replace(/%%FAQ_LIST%%/g, faqHtml)
       .replace(/%%FINAL_H%%/g, lightHtml(c.headline ?? ""))
       .replace(/%%FINAL_SUB%%/g, lightHtml(c.subheadline ?? ""))
+      .replace(/%%FINAL_CTA_LABEL%%/g, escapeHtml(c.primary_cta_label ?? "Falar no WhatsApp agora"))
       .replace(/%%DEMO_REAL_LIST%%/g, demoRealListHtml)
       .replace(/%%DEMO_REAL_FIRST_URL%%/g, escapeHtml(demoRealFirstUrl))
-      .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName));
+      .replace(/%%DEMO_REAL_FIRST_NAME%%/g, escapeHtml(demoRealFirstName))
+      .replace(/%%PROCESS_STEPS%%/g, processStepsHtml);
 
     // Global replacement of contact info (phone + email) baked in the static template
     const waNumber = (s.whatsapp_number ?? "+351916082384").replace(/[^\d]/g, "");
