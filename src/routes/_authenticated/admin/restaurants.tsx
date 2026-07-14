@@ -130,6 +130,7 @@ function RestaurantsAdmin() {
       featured: false,
       featured_order: null,
       is_new: false,
+      accent_color: null,
       updated_at: new Date().toISOString(),
     });
     setOpen(true);
