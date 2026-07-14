@@ -145,6 +145,16 @@ export const getRenderedLanding = createServerFn({ method: "GET" }).handler(
       )
       .join("");
 
+    const processStepsHtml = (features.data ?? [])
+      .slice(0, 4)
+      .map(
+        (f, i) =>
+          `<li class="process-step" data-step-reveal style="--i:${i}"><div class="process-num">${i + 1}</div><div class="process-body"><h3 class="process-title">${escapeHtml(
+            f.title,
+          )}</h3><p class="process-desc">${lightHtml(f.description ?? "")}</p></div></li>`,
+      )
+      .join("");
+
     // Render template
     let html = bodyTemplate
       .replace(/%%HERO_KICKER%%/g, escapeHtml(h.kicker ?? ""))
