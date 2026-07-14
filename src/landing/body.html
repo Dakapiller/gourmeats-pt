@@ -86,22 +86,22 @@
   </div>
 </section>
 
-<!-- DEMO -->
-<section id="demo">
+<!-- DEMO REAL — interactive restaurant selector (also serves as #how anchor) -->
+<section id="how" class="demo-real" data-reveal>
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-kicker">Demo real</div>
+      <div class="sec-kicker demo-real-kicker">Demo real</div>
       <h2>Experimente como se fosse o seu cliente.</h2>
-      <p class="sec-sub">Esta é a carta real de um cliente Gourmeats — experimenta como se fosses o cliente.</p>
+      <p class="sec-sub">Esta é a carta real de <span data-demo-real-name>%%DEMO_REAL_FIRST_NAME%%</span> — experimenta como se fosses o cliente.</p>
     </div>
-    <div class="demo-inner">
-      <div class="demo-phone" id="dphone">
-        <div class="dn"></div>
-        <div class="dscreen dscreen-live">
-          <iframe id="demo-iframe" src="https://qr.gourmeatsapp.com/n/1839" loading="lazy" title="Carta ao vivo RO Ramen &amp; Outros" allow="fullscreen"></iframe>
-          <div class="demo-fallback" id="demo-fallback">
-            <p>Abre a carta ao vivo no teu browser para experimentar.</p>
-            <a class="demo-fallback-btn" href="https://qr.gourmeatsapp.com/n/1839" target="_blank" rel="noopener">Ver carta ao vivo →</a>
+    <div class="demo-real-grid">
+      <div class="demo-real-list" role="listbox" aria-label="Escolher restaurante">%%DEMO_REAL_LIST%%</div>
+      <div class="demo-real-stage">
+        <div class="demo-real-phone" data-demo-real-phone>
+          <div class="demo-real-notch"></div>
+          <div class="demo-real-screen">
+            <div class="demo-real-loading" data-demo-real-loading aria-hidden="true"></div>
+            <iframe data-demo-real-iframe src="%%DEMO_REAL_FIRST_URL%%" title="Carta real do restaurante" scrolling="no" loading="lazy" allow="fullscreen"></iframe>
           </div>
         </div>
       </div>
@@ -111,64 +111,42 @@
 
 <script>
 (function(){
-  const iframe = document.getElementById('demo-iframe');
-  const fallback = document.getElementById('demo-fallback');
-  if (!iframe || !fallback) return;
-  const showFallback = () => {
-    iframe.style.display = 'none';
-    fallback.style.display = 'flex';
+  var list = document.querySelector('.demo-real-list');
+  var iframe = document.querySelector('[data-demo-real-iframe]');
+  var phone = document.querySelector('[data-demo-real-phone]');
+  var loading = document.querySelector('[data-demo-real-loading]');
+  var nameEl = document.querySelector('[data-demo-real-name]');
+  if(!list || !iframe || !phone) return;
+  var showLoading = function(on){ if(loading) loading.classList.toggle('is-on', !!on); };
+  iframe.addEventListener('load', function(){ showLoading(false); });
+  list.addEventListener('click', function(e){
+    var row = e.target.closest('[data-demo-item]');
+    if(!row) return;
+    var url = row.getAttribute('data-url');
+    var name = row.getAttribute('data-name');
+    var accent = row.getAttribute('data-accent') || '#0d9488';
+    if(!url) return;
+    list.querySelectorAll('[data-demo-item]').forEach(function(r){ r.classList.remove('is-selected'); r.removeAttribute('aria-selected'); });
+    row.classList.add('is-selected');
+    row.setAttribute('aria-selected','true');
+    phone.style.setProperty('--accent', accent);
+    if(nameEl && name) nameEl.textContent = name;
+    if(iframe.getAttribute('src') !== url){
+      showLoading(true);
+      iframe.setAttribute('src', url);
+    }
+  });
+  // Responsive scale
+  var applyScale = function(){
+    var vw = window.innerWidth;
+    var scale = Math.min(1, Math.max(0.62, (vw - 48) / 420));
+    phone.style.setProperty('--phone-scale', scale.toFixed(3));
   };
-  const timer = setTimeout(showFallback, 4500);
-  iframe.addEventListener('load', function() {
-    clearTimeout(timer);
-  });
-  iframe.addEventListener('error', function() {
-    clearTimeout(timer);
-    showFallback();
-  });
+  applyScale();
+  window.addEventListener('resize', applyScale, {passive:true});
 })();
 </script>
 
-<!-- HOW -->
-<section id="how">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="sec-kicker">Implementação</div>
-      <h2>Do primeiro contacto às mesas em 7 dias.</h2>
-      <p class="sec-sub">A única coisa que o restaurante faz é imprimir o QR code.</p>
-    </div>
-    <div class="how-grid">
-      <div class="how-step" data-n="1">
-        <div class="how-num">1</div>
-        <div class="how-h">Fala connosco</div>
-        <p class="how-d">Uma conversa por WhatsApp ou visita ao restaurante. Percebemos o menu, os pratos em destaque e o que precisa de ser filmado — e definimos o plano juntos.</p>
-      </div>
-      <div class="how-step" data-n="2">
-        <div class="how-num">2</div>
-        <div class="how-h">Carta digital online</div>
-        <div class="how-tag">em 24 horas</div>
-        <p class="how-d">Inserem o conteúdo em português — o sistema traduz automaticamente para 24+ idiomas. A carta abre no idioma do telemóvel do cliente, sem qualquer ação manual.</p>
-      </div>
-      <div class="how-step" data-n="3">
-        <div class="how-num">3</div>
-        <div class="how-h">Vídeos dos pratos</div>
-        <div class="how-tag">em 7 dias</div>
-        <div class="how-opts">
-          <div class="how-opt"><strong>🎬 Marcamos data e gravamos</strong>A nossa equipa vai ao restaurante, filma e edita tudo.</div>
-          <div class="how-opt"><strong>📸 Ou envia as suas fotos</strong>Se já tem fotos profissionais, criamos os vídeos a partir delas.</div>
-        </div>
-      </div>
-      <div class="how-step" data-n="4">
-        <div class="how-num">4</div>
-        <div class="how-h">Imprime o QR code</div>
-        <p class="how-d">Coloca nas mesas e está feito. A partir daqui, qualquer atualização de preços, pratos ou tradução fica em tempo real — sem reimprimir nada, nunca.</p>
-      </div>
-    </div>
-    <div class="how-cta">
-      <a class="btn-wa lg" href="https://wa.me/351916082384?text=Ol%C3%A1%20Andr%C3%A9%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20da%20Gourmeats%20e%20gostaria%20de%20agendar%20uma%20demonstra%C3%A7%C3%A3o%20para%20o%20meu%20restaurante." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.4 2 11.9c0 1.8.5 3.5 1.4 5L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.4 10-9.9S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3c-.8-1.3-1.3-2.8-1.3-4.3C3.6 7.4 7.4 3.7 12 3.7s8.4 3.7 8.4 8.2-3.8 8.1-8.4 8.1zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.7-.7-1.2-1.5-1.4-1.7-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg>Agendar demonstração com o André</a>
-    </div>
-  </div>
-</section>
 
 <!-- PROOF -->
 <section id="proof">
